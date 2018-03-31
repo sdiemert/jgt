@@ -1,4 +1,6 @@
-package test.z3Test;/*++
+package test.z3Test;
+
+/*++
  Copyright (c) 2012 Microsoft Corporation
 
 Module Name:
