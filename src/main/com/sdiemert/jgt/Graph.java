@@ -104,6 +104,70 @@ public class Graph {
     }
 
 
+    /**
+     * Removes a node from the graph by object reference. Any incident (source or target) edges
+     * are also removed to maintain graph integrity.
+     *
+     * @param n a Node reference for the object to delete.
+     * @return true if deleted, false otherwise (unchanged).
+     */
+    public boolean deleteNode(Node n){
+        if(!this.nodes.contains(n)){
+            return false;
+        }
+        for(Edge e : this.incident(n)){
+            this.deleteEdge(e);
+        }
+        this.nodes.remove(n);
+        return true;
+    }
+
+    /**
+     * Deletes multiple nodes from the graph. This method will silently *not*
+     * delete nodes if they are not in the graph, i.e., deletes each node if it
+     * exists in the graph, otherwise does not delete.
+     *
+     * @param N multi argument list of node references to delete.
+     */
+    public void deleteNodes(Node... N){
+        for(Node n : N){
+            this.deleteNode(n);
+        }
+    }
+
+    /**
+     * Finds all edges that are incident (either source or target)
+     * to the given node.
+     *
+     * @param n the Node to find edges incident too.
+     * @return a List of edges incident to the given node.
+     */
+    public List<Edge> incident(Node n){
+        List<Edge> l = new ArrayList<Edge>();
+        for(Edge e : this.edges){
+            if(e.getSrc().equals(n) || e.getTar().equals(n)){
+                l.add(e);
+            }
+        }
+        return l;
+    }
+
+    /**
+     * Finds all n1-(e)->n2 edges in the Graph.
+     *
+     * @param n1 the source node of the edge.
+     * @param n2 the target node of the edge.
+     * @return a List of edges between n1 and n2.
+     */
+    public List<Edge> adjacentList(Node n1, Node n2){
+        List<Edge> l = new ArrayList<Edge>();
+        for(Edge e : this.edges){
+            if(e.getSrc().equals(n1) && e.getTar().equals(n2)){
+                l.add(e);
+            }
+        }
+        return l;
+    }
 
     // ---------- GETTERS AND SETTERS ----------
 

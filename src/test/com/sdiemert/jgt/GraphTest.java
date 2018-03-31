@@ -2,6 +2,8 @@ package com.sdiemert.jgt;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -241,5 +243,158 @@ public class GraphTest {
         assertEquals(1, g.getEdges().size());
         assertEquals(2, g.getNodes().size());
     }
+
+    @Test
+    public void testAdjacentNormal() throws GraphException{
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Edge e0 = new Edge(n0, n1);
+        Edge e1 = new Edge(n1, n2);
+
+        Graph g = new Graph();
+
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        assertEquals(3, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+
+        List<Edge> ret = g.adjacentList(n0, n1);
+
+        assertEquals(1, ret.size());
+        assertEquals(e0.getId(), ret.get(0).getId());
+
+        assertEquals(3, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+
+    }
+
+    @Test
+    public void testAdjacentWithDoubleEdge() throws GraphException{
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Edge e0 = new Edge(n0, n1);
+        Edge e1 = new Edge(n0, n1);
+
+        Graph g = new Graph();
+
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        assertEquals(3, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+
+        List<Edge> ret = g.adjacentList(n0, n1);
+
+        assertEquals(2, ret.size());
+        assertEquals(e0.getId(), ret.get(0).getId());
+        assertEquals(e1.getId(), ret.get(1).getId());
+
+        assertEquals(3, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+
+    }
+
+    @Test
+    public void testAdjacentWithNoEdge() throws GraphException{
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Edge e0 = new Edge(n0, n1);
+        Edge e1 = new Edge(n0, n1);
+
+        Graph g = new Graph();
+
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        assertEquals(3, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+
+        List<Edge> ret = g.adjacentList(n1, n2);
+
+        assertEquals(0, ret.size());
+
+        assertEquals(3, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+
+    }
+
+    @Test
+    public void testIncidentNormal() throws GraphException{
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Node n3 = new Node();
+        Edge e0 = new Edge(n0, n1);
+        Edge e1 = new Edge(n1, n2);
+        Graph g = new Graph();
+        g.addNodes(n0, n1, n2, n3);
+        g.addEdges(e0, e1);
+
+        assertEquals(4, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+
+        assertEquals(1, g.incident(n0).size());
+        assertEquals(2, g.incident(n1).size());
+        assertEquals(1, g.incident(n2).size());
+        assertEquals(0, g.incident(n3).size());
+
+        assertEquals(4, g.getNodes().size());
+        assertEquals(2, g.getEdges().size());
+    }
+
+
+    @Test
+    public void testDeleteNodeNormal() throws GraphException{
+
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Node n3 = new Node();
+        Node n4 = new Node();
+        Edge e0 = new Edge(n0, n1);
+        Edge e1 = new Edge(n1, n2);
+        Edge e2 = new Edge(n2, n3);
+        Graph g = new Graph();
+        g.addNodes(n0, n1, n2, n3, n4);
+        g.addEdges(e0, e1, e2);
+
+        assertEquals(5, g.getNodes().size());
+        assertEquals(3, g.getEdges().size());
+
+        g.deleteNode(n4);
+
+        assertEquals(4, g.getNodes().size());
+        assertEquals(3, g.getEdges().size());
+
+        g.deleteNode(n1);
+
+        assertEquals(3, g.getNodes().size());
+        assertEquals(1, g.getEdges().size());
+
+        g.deleteNode(n3);
+
+        assertEquals(2, g.getNodes().size());
+        assertEquals(0, g.getEdges().size());
+
+        g.deleteNodes(n0, n2);
+
+        assertEquals(0, g.getNodes().size());
+        assertEquals(0, g.getEdges().size());
+    }
+
+    @Test
+    public void testDeleteNodeInvalidNode(){
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Graph g = new Graph();
+        g.addNode(n0);
+        assertFalse(g.deleteNode(n1));
+    }
+
+
 
 }
