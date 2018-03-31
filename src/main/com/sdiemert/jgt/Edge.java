@@ -9,11 +9,12 @@ public class Edge {
     private Node src;
     private Node tar;
     private String id;
+    private String label;
 
     // ------------ Constructors --------------
 
     /**
-     * Creates a new Edge object that joins two nodes.
+     * Creates a new directed Edge object that joins two nodes.
      *
      * @param src the source node of the edge.
      * @param tar the target node of the edge.
@@ -26,6 +27,23 @@ public class Edge {
         this.src = src;
         this.tar = tar;
         this.id = "edge-" + UUID.randomUUID().toString();
+        this.label = "NONE";
+    }
+
+    /**
+     * Creates a new directed labelled edge object that joins to nodes.
+     * @param src the source node of the edge.
+     * @param tar the target node of the edge.
+     * @param label a label for the edge.
+     */
+    @Contract("null, _, _ -> fail; !null, null, _ -> fail; !null, !null, null -> fail")
+    public Edge(Node src, Node tar, String label){
+        assert(src != null && tar != null && label != null);
+
+        this.src = src;
+        this.tar = tar;
+        this.id = "edge-" + UUID.randomUUID().toString();
+        this.label = label;
     }
 
     // ----------- Getters and Setters ----------
@@ -40,5 +58,13 @@ public class Edge {
 
     public String getId(){
         return this.id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

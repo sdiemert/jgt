@@ -5,9 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class GraphTest {
 
@@ -25,6 +23,28 @@ public class GraphTest {
         Node n = new Node();
         assertNotNull(n);
         assertNotNull(n.getId());
+        assertNotNull(n.getType());
+        assertEquals("NONE", n.getType());
+    }
+
+    @Test
+    public void testConstructNodeWithType(){
+        Node n = new Node("A");
+        assertNotNull(n);
+        assertNotNull(n.getId());
+        assertNotNull(n.getType());
+        assertNull(n.getData());
+    }
+
+    @Test
+    public void testConstructNodeWithData(){
+        Node<IntNodeData> n = new Node<IntNodeData>("A", new IntNodeData(1));
+        assertNotNull(n);
+        assertNotNull(n.getId());
+        assertNotNull(n.getType());
+        assertNotNull(n.getData());
+        assertEquals(1, n.getData().getVal());
+        assertEquals("A", n.getType());
     }
 
     @Test
@@ -35,6 +55,20 @@ public class GraphTest {
         assertNotNull(e);
         assertEquals(n1.getId(), e.getSrc().getId());
         assertEquals(n2.getId(), e.getTar().getId());
+        assertNotNull(e.getLabel());
+        assertEquals("NONE", e.getLabel());
+    }
+
+    @Test
+    public void testConstructEdgeWithLabel(){
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Edge e = new Edge(n1, n2, "foo");
+        assertNotNull(e);
+        assertEquals(n1.getId(), e.getSrc().getId());
+        assertEquals(n2.getId(), e.getTar().getId());
+        assertNotNull(e.getLabel());
+        assertEquals("foo", e.getLabel());
     }
 
     @Test
