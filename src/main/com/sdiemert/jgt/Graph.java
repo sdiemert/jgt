@@ -66,6 +66,45 @@ public class Graph {
         }
     }
 
+    /**
+     * Deletes an edge from the graph using the Edge object as a reference.
+     * @param e a reference to the Edge object to delete.
+     * @return true if deleted, false otherwise (unchanged graph).
+     */
+    public boolean deleteEdge(Edge e){
+        return this.edges.remove(e);
+    }
+
+    /**
+     * Deletes an edge from the graph using the Edge's UUID as a reference.
+     * @param s the UUID of the edge to delete.
+     * @return true if deleted, false otherwise (unchanged graph).
+     */
+    public boolean deleteEdge(String s){
+        for(Edge e : this.edges){
+            if(e.getId().equals(s)){
+                this.edges.remove(e);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Deletes an edge from the graph using the Edge's index in the edge list.
+     * @param i the index in the edge list of the graph.
+     * @return true if deleted, false otherwise (unchanged graph).
+     */
+    public boolean deleteEdge(int i){
+        if(i >= 0 && i < this.edges.size()) {
+            return this.deleteEdge(this.edges.get(i));
+        }else{
+            return false;
+        }
+    }
+
+
+
     // ---------- GETTERS AND SETTERS ----------
 
     public List<Node> getNodes(){
