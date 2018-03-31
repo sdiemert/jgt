@@ -95,14 +95,13 @@ public class Graph {
      * @param i the index in the edge list of the graph.
      * @return true if deleted, false otherwise (unchanged graph).
      */
-    public boolean deleteEdge(int i){
+    protected boolean deleteEdge(int i){
         if(i >= 0 && i < this.edges.size()) {
             return this.deleteEdge(this.edges.get(i));
         }else{
             return false;
         }
     }
-
 
     /**
      * Removes a node from the graph by object reference. Any incident (source or target) edges
@@ -120,6 +119,37 @@ public class Graph {
         }
         this.nodes.remove(n);
         return true;
+    }
+
+    /**
+     * Removes a node from the graph by index in node list. Any incident (source or target) edges
+     * are also removed to maintain graph integrity.
+     *
+     * @param i index of the node to delete in the node list.
+     * @return true if deleted, false otherwise (unchanged).
+     */
+    protected boolean deleteNode(int i){
+        if(i >= 0 && i < this.nodes.size()){
+            return this.deleteNode(this.nodes.get(i));
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Removes a node from the graph by uuid string. Any incident (source or target) edges
+     * are also removed to maintain graph integrity.
+     *
+     * @param id uuid of the node to delete.
+     * @return true if deleted, false otherwise (unchanged).
+     */
+    protected boolean deleteNode(String id){
+        for(Node n : this.nodes){
+            if(n.getId().equals(id)){
+                return this.deleteNode(n);
+            }
+        }
+        return false;
     }
 
     /**

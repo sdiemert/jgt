@@ -387,6 +387,48 @@ public class GraphTest {
     }
 
     @Test
+    public void testDeleteNodeWithValidUUID(){
+        Node n0 = new Node();
+        Graph g = new Graph();
+        g.addNode(n0);
+        assertEquals(1, g.getNodes().size());
+        assertTrue(g.deleteNode(n0.getId()));
+        assertEquals(0, g.getNodes().size());
+    }
+
+    @Test
+    public void testDeleteNodeWithInvalidUUID(){
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Graph g = new Graph();
+        g.addNode(n0);
+        assertEquals(1, g.getNodes().size());
+        assertFalse(g.deleteNode(n1.getId()));
+        assertEquals(1, g.getNodes().size());
+    }
+
+    @Test
+    public void testDeleteNodeWithValidIndex(){
+        Node n0 = new Node();
+        Graph g = new Graph();
+        g.addNode(n0);
+        assertEquals(1, g.getNodes().size());
+        assertTrue(g.deleteNode(0));
+        assertEquals(0, g.getNodes().size());
+    }
+
+    @Test
+    public void testDeleteNodeWithInvalidIndex(){
+        Node n0 = new Node();
+        Graph g = new Graph();
+        g.addNode(n0);
+        assertEquals(1, g.getNodes().size());
+        assertFalse(g.deleteNode(1));
+        assertFalse(g.deleteNode(-1));
+        assertEquals(1, g.getNodes().size());
+    }
+
+    @Test
     public void testDeleteNodeInvalidNode(){
         Node n0 = new Node();
         Node n1 = new Node();
@@ -394,7 +436,5 @@ public class GraphTest {
         g.addNode(n0);
         assertFalse(g.deleteNode(n1));
     }
-
-
 
 }
