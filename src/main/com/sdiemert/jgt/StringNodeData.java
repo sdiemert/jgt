@@ -16,6 +16,10 @@ public class StringNodeData extends NodeData {
         }
     }
 
+    public StringNodeData clone(){
+        return new StringNodeData(this.getVal());
+    }
+
     public String getVal() {
         return val;
     }

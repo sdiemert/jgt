@@ -16,6 +16,10 @@ public class IntNodeData extends NodeData {
         }
     }
 
+    public IntNodeData clone(){
+        return new IntNodeData(this.getVal());
+    }
+
     public int getVal() {
         return val;
     }

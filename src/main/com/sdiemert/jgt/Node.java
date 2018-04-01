@@ -23,34 +23,32 @@ public class Node<T extends NodeData> {
 
     /**
      * Makes a new typed Node object.
-     * @param type a string describing type of the Node.
+     * @param label a string describing type of the Node.
      */
     @Contract("null -> fail")
-    public Node(String type){
+    public Node(String label){
 
         assert(type != null);
 
         this.id = "node-"+UUID.randomUUID().toString();
-        this.type = type;
+        this.type = label;
         this.data = null;
     }
 
     /**
      * Makes a new typed Node object containing a data object.
-     * @param type a string describing type of the Node.
+     * @param label a string describing type of the Node.
      * @param data a NodeData object containing data for this node.
      */
     @Contract("null, _ -> fail; !null, null -> fail")
-    public Node(String type, T data){
+    public Node(String label, T data){
 
         assert(type != null && data != null);
 
         this.id = "node-"+UUID.randomUUID().toString();
-        this.type = type;
+        this.type = label;
         this.data = data;
     }
-
-
 
     // --------- GETTERS AND SETTERS ----------------
 
@@ -59,6 +57,10 @@ public class Node<T extends NodeData> {
     }
 
     public String getType() {
+        return type;
+    }
+
+    public String getLabel() {
         return type;
     }
 

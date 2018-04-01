@@ -471,4 +471,99 @@ public class GraphTest {
         assertFalse(g.deleteNode(n1));
     }
 
+    @Test
+    public void testGetUniqueNodeLabelsShouldIncludeAllUniqueLabels(){
+
+        Node n0 = new Node("A");
+        Node n1 = new Node("B");
+        Graph g = new Graph();
+        g.addNodes(n0, n1);
+
+        List<String> l = g.getUniqueNodeLabels();
+
+        assertNotNull(l);
+        assertEquals(2, l.size());
+        assertTrue(l.contains("A"));
+        assertTrue(l.contains("B"));
+    }
+
+    @Test
+    public void testGetUniqueNodeLabelsShouldNotIncludeDuplicates(){
+
+        Node n0 = new Node("A");
+        Node n1 = new Node("A");
+        Graph g = new Graph();
+        g.addNodes(n0, n1);
+
+        List<String> l = g.getUniqueNodeLabels();
+
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertTrue(l.contains("A"));
+    }
+
+    @Test
+    public void testGetUniqueEdgeLabelsShouldIncludeAllUniqueLabels() throws GraphException{
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Edge e0 = new Edge(n0, n1, "e0");
+        Edge e1 = new Edge(n1, n2, "e1");
+        Graph g =  new Graph();
+
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        List<String> l = g.getUniqueEdgeLabels();
+
+        assertNotNull(l);
+        assertEquals(2, l.size());
+        assertTrue(l.contains("e0"));
+        assertTrue(l.contains("e1"));
+    }
+
+    @Test
+    public void testGetUniqueEdgeLabelsShouldNotIncludeDuplicates() throws GraphException{
+        Node n0 = new Node();
+        Node n1 = new Node();
+        Node n2 = new Node();
+        Edge e0 = new Edge(n0, n1, "e0");
+        Edge e1 = new Edge(n1, n2, "e0");
+        Graph g =  new Graph();
+
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        List<String> l = g.getUniqueEdgeLabels();
+
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertTrue(l.contains("e0"));
+    }
+
+    @Test
+    public void testGetUniqueNodeDataShouldIncludeAllUniqueVals(){
+        Node n0 = new Node<IntNodeData>("A", new IntNodeData(0));
+        Node n1 = new Node<IntNodeData>("A", new IntNodeData(1));
+        Graph g = new Graph();
+        g.addNodes(n0, n1);
+        List<NodeData> l = g.getUniqueNodeData();
+        assertNotNull(l);
+        assertEquals(2, l.size());
+        assertTrue(l.contains(new IntNodeData(0)));
+        assertTrue(l.contains(new IntNodeData(1)));
+    }
+
+    @Test
+    public void testGetUniqueNodeDataShouldNotHaveDuplicates(){
+        Node n0 = new Node<IntNodeData>("A", new IntNodeData(0));
+        Node n1 = new Node<IntNodeData>("A", new IntNodeData(0));
+        Graph g = new Graph();
+        g.addNodes(n0, n1);
+        List<NodeData> l = g.getUniqueNodeData();
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertTrue(l.contains(new IntNodeData(0)));
+    }
+
 }

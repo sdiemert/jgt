@@ -42,4 +42,19 @@ public class NodeDataTest {
         assertFalse(i.compare(new IntNodeData(1)));
     }
 
+    @Test
+    public void testEqualsShouldReturnTrueForEqualVals(){
+        IntNodeData i = new IntNodeData(1);
+        IntNodeData j = new IntNodeData(1);
+        assertTrue(i.equals(j));
+        assertEquals(i, j);
+    }
+
+    @Test
+    public void testEqualsShouldReturnFalseForNotNodeData(){
+        IntNodeData i = new IntNodeData(1);
+        String s = "foo";
+        assertFalse(i.equals(s));
+    }
+
 }

@@ -199,6 +199,46 @@ public class Graph {
         return l;
     }
 
+    /**
+     * Gets a list of all *unique* node labels/types in the graph.
+     *
+     * @return a List of unique node labels.
+     */
+    public List<String> getUniqueNodeLabels(){
+        ArrayList<String> l = new ArrayList<String>();
+        for(Node n : this.nodes){
+            if(!l.contains(n.getLabel())){
+                l.add(n.getLabel());
+            }
+        }
+        return l;
+    }
+
+    /**
+     * Gets a list of all *unique* edge labels/types in the graph.
+     *
+     * @return a List of unique edge labels.
+     */
+    public List<String> getUniqueEdgeLabels(){
+        ArrayList<String> l = new ArrayList<String>();
+        for(Edge e : this.edges){
+            if(!l.contains(e.getLabel())){
+                l.add(e.getLabel());
+            }
+        }
+        return l;
+    }
+
+    public List<NodeData> getUniqueNodeData(){
+        ArrayList<NodeData> l = new ArrayList<NodeData>();
+        for(Node n : this.nodes){
+            if(!l.contains(n.getData())){
+                l.add(n.getData());
+            }
+        }
+        return l;
+    }
+
     // ---------- GETTERS AND SETTERS ----------
 
     public List<Node> getNodes(){
