@@ -141,4 +141,38 @@ public class MatcherTest {
         assertEquals(3, Matcher.numberOfBits(5));
     }
 
+
+    @Test
+    public void testFindMorphism() throws GraphException{
+        Graph g = new Graph();
+        Graph h = new Graph();
+
+        Node ng0 = new Node("A");
+        Node ng1 = new Node("B");
+        Edge eg0 = new Edge(ng0, ng1, "f");
+        g.addNodes(ng0, ng1);
+        g.addEdges(eg0);
+
+        Node nh0 = new Node("A");
+        Node nh1 = new Node("B");
+        Node nh2 = new Node("A");
+        Edge eh0 = new Edge(nh0, nh1, "f");
+        Edge eh1 = new Edge(nh1, nh2, "e");
+        Edge eh2 = new Edge(nh2, nh0, "e");
+        h.addNodes(nh0, nh1, nh2);
+        h.addEdges(eh0, eh1, eh2);
+
+        Matcher m = new Matcher();
+
+        m.reset();
+
+        Morphism ret = m.findMorphism(g, h);
+
+        assertNotNull(ret);
+
+        assertEquals(0, ret.mapNode(0));
+        assertEquals(1, ret.mapNode(1));
+        assertEquals(0, ret.mapEdge(0));
+    }
+
 }
