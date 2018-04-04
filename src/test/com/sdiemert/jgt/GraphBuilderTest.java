@@ -38,4 +38,30 @@ public class GraphBuilderTest {
         gb.fromMatrix(M, 1);
     }
 
+    @Test
+    public void testFromMatrixWithLabels() throws GraphException{
+
+        String[][] M = {
+                {null, "A",  null},
+                {null, null, "B"},
+                {"C", null, null}
+        };
+
+        String[] labels = {"n0", "n1", "n2"};
+
+        GraphBuilder gb = new GraphBuilder();
+        Graph g = gb.fromMatrix(M, labels, 3);
+
+        assertNotNull(g);
+        assertEquals(3, g.getNodes().size());
+        assertEquals(3, g.getEdges().size());
+        assertEquals("A", g.getEdges().get(0).getLabel());
+        assertEquals("B", g.getEdges().get(1).getLabel());
+        assertEquals("C", g.getEdges().get(2).getLabel());
+        assertEquals("n0", g.getNodes().get(0).getLabel());
+        assertEquals("n1", g.getNodes().get(1).getLabel());
+        assertEquals("n2", g.getNodes().get(2).getLabel());
+
+    }
+
 }
