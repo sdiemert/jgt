@@ -23,8 +23,7 @@ public class GraphTest {
         Node n = new Node();
         assertNotNull(n);
         assertNotNull(n.getId());
-        assertNotNull(n.getType());
-        assertEquals("NONE", n.getType());
+        assertNull(n.getType());
     }
 
     @Test

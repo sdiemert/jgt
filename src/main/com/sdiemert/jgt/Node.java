@@ -17,7 +17,7 @@ public class Node<T extends NodeData> {
      */
     public Node() {
         this.id = "node-"+UUID.randomUUID().toString();
-        this.type = "NONE";
+        this.type = null;
         this.data = null;
     }
 
