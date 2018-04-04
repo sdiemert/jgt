@@ -251,4 +251,59 @@ public class MatcherTest {
         assertNull(ret);
     }
 
+    @Test
+    public void testFindMorphismWithSingletonMatchGraph() {
+
+        Graph g = new Graph();
+        g.addNodes(new Node("A"));
+
+        Graph h = new Graph();
+        h.addNodes(new Node("B"), new Node("A"));
+
+        Matcher m = new Matcher();
+
+        Morphism morph = m.findMorphism(g, h);
+
+        assertNotNull(morph);
+        assertEquals(1, morph.mapNode(0));
+
+    }
+
+    @Test
+    public void testFindMorphismOnLargerGraphs() throws GraphException{
+
+        String[][] G = {
+                {null, "A", null, null, null},
+                {null, null, "A", null, null},
+                {null, null, null, "A", null},
+                {null, null, null, null, "A"},
+                {"A", null, null, null, null},
+        };
+
+        String[] Glabels = {"n", "n", "n", "n", "n"};
+
+        String[][] H = {
+                {null, null, null, null, "A", null, null},
+                {"A", null, "A", null, null, "B", null},
+                {null, null, null, "A", null, null, "A"},
+                {"A", null, null, null, "A", null, null},
+                {null, "A", null, null, null, "A", null},
+                {null, "A", "B", null, null, null, null},
+                {null, "B", null, null, null, null, null},
+        };
+
+        String[] Hlabels = {"n","n","n","n","n","n","n"};
+
+        GraphBuilder b = new GraphBuilder();
+
+        Graph g = b.fromMatrix(G, Glabels, 5);
+        Graph h = b.fromMatrix(H, Hlabels, 7);
+
+        Matcher m = new Matcher();
+
+        Morphism morph = m.findMorphism(g, h);
+
+        assertNotNull(morph);
+    }
+
 }
