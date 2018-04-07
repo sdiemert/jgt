@@ -2,6 +2,7 @@ package com.sdiemert.jgt;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -563,6 +564,147 @@ public class GraphTest {
         assertNotNull(l);
         assertEquals(1, l.size());
         assertTrue(l.contains(new IntNodeData(0)));
+    }
+
+    @Test
+    public void testGraphClone() throws GraphException {
+        Node n0 = new Node("n0");
+        Node n1 = new Node<IntNodeData>("n1", new IntNodeData(1));
+        Node n2 = new Node();
+        Edge e0 = new Edge(n0, n1, "e0");
+        Edge e1 = new Edge(n0, n1);
+        Graph g = new Graph();
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        Graph gp = g.clone();
+
+        assertNotNull(gp);
+        assertEquals(3, gp.getNodes().size());
+        assertEquals(2, gp.getEdges().size());
+
+        // make sure the id's are unique
+        assertNotEquals(gp.getNodes().get(0).getId(), n0.getId());
+        assertNotEquals(gp.getNodes().get(0).getId(), n1.getId());
+        assertNotEquals(gp.getNodes().get(0).getId(), n2.getId());
+        assertNotEquals(gp.getEdges().get(0).getId(), e0.getId());
+        assertNotEquals(gp.getEdges().get(0).getId(), e1.getId());
+
+        // should preserve ordering of nodes in lists.
+        assertEquals(gp.getNodes().get(0).getLabel(), g.getNodes().get(0).getLabel());
+        assertEquals(gp.getNodes().get(1).getLabel(), g.getNodes().get(1).getLabel());
+        assertEquals(gp.getNodes().get(2).getLabel(), g.getNodes().get(2).getLabel());
+        assertEquals(gp.getEdges().get(0).getLabel(), g.getEdges().get(0).getLabel());
+        assertEquals(gp.getEdges().get(1).getLabel(), g.getEdges().get(1).getLabel());
+    }
+
+    @Test(expected = GraphException.class)
+    public void testSubgraphBadNode() throws GraphException {
+
+        Node n0 = new Node("n0");
+        Node n1 = new Node("n1");
+        Node n2 = new Node("n2");
+        Node n3 = new Node("n3");
+        Edge e0 = new Edge(n0, n1, "e0");
+        Edge e1 = new Edge(n1, n2, "e1");
+
+        Graph g = new Graph();
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        List<Node> subNodes = new ArrayList<Node>();
+        subNodes.add(n0);
+        subNodes.add(n1);
+        subNodes.add(n3);
+
+        List<Edge> subEdges = new ArrayList<Edge>();
+        subEdges.add(e0);
+
+
+        Graph s = g.subgraph(subNodes, subEdges);
+    }
+
+    @Test(expected = GraphException.class)
+    public void testSubgraphBadEdge() throws GraphException {
+
+        Node n0 = new Node("n0");
+        Node n1 = new Node("n1");
+        Node n2 = new Node("n2");
+        Edge e0 = new Edge(n0, n1, "e0");
+        Edge e1 = new Edge(n1, n2, "e1");
+
+        Graph g = new Graph();
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        List<Node> subNodes = new ArrayList<Node>();
+        subNodes.add(n0);
+        subNodes.add(n1);
+
+        List<Edge> subEdges = new ArrayList<Edge>();
+        subEdges.add(e0);
+        subEdges.add(e1);
+
+        Graph s = g.subgraph(subNodes, subEdges);
+    }
+
+    @Test
+    public void testSubgraph() throws GraphException {
+
+        Node n0 = new Node("n0");
+        Node n1 = new Node("n1");
+        Node n2 = new Node("n2");
+        Edge e0 = new Edge(n0, n1, "e0");
+        Edge e1 = new Edge(n1, n2, "e1");
+
+        Graph g = new Graph();
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        List<Node> subNodes = new ArrayList<Node>();
+        subNodes.add(n0);
+        subNodes.add(n1);
+
+        List<Edge> subEdges = new ArrayList<Edge>();
+        subEdges.add(e0);
+
+
+        Graph s = g.subgraph(subNodes, subEdges);
+
+        assertNotNull(s);
+        assertEquals(2, s.getNodes().size());
+        assertEquals(1, s.getEdges().size());
+        assertEquals(g.getNodes().get(0), s.getNodes().get(0));
+        assertEquals(g.getNodes().get(1), s.getNodes().get(1));
+        assertEquals(g.getEdges().get(0), s.getEdges().get(0));
+
+        assertTrue(g.getNodes().get(0) == s.getNodes().get(0));
+    }
+
+    @Test(expected = GraphException.class)
+    public void testSubgraphEdgeNotInGraph() throws GraphException {
+
+        Node n0 = new Node("n0");
+        Node n1 = new Node("n1");
+        Node n2 = new Node("n2");
+        Edge e0 = new Edge(n0, n1, "e0");
+        Edge e1 = new Edge(n1, n2, "e1");
+
+        Edge e2 = new Edge(n0, n1);
+
+        Graph g = new Graph();
+        g.addNodes(n0, n1, n2);
+        g.addEdges(e0, e1);
+
+        List<Node> subNodes = new ArrayList<Node>();
+        subNodes.add(n0);
+        subNodes.add(n1);
+
+        List<Edge> subEdges = new ArrayList<Edge>();
+        subEdges.add(e0);
+        subEdges.add(e2);
+
+        Graph s = g.subgraph(subNodes, subEdges);
     }
 
 }

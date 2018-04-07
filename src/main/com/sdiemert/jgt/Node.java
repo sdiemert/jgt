@@ -50,6 +50,20 @@ public class Node<T extends NodeData> {
         this.data = data;
     }
 
+    /**
+     * @return a copy of this node but with a new/different ID.
+     */
+    public Node<T> clone(){
+
+        if(this.data != null && this.type != null) {
+            return new Node<T>(this.getLabel(), (T) this.getData().clone());
+        }else if(this.type != null){
+            return new Node<T>(this.getLabel());
+        }else{
+            return new Node<T>();
+        }
+    }
+
     // --------- GETTERS AND SETTERS ----------------
 
     public String getId() {

@@ -239,6 +239,74 @@ public class Graph {
         return l;
     }
 
+    /**
+     * Creates a complete copy of this Graph made of new objects.
+     * This may be a memory intensive operation on a large graph.
+     *
+     * @return a copy of this graph or null if the copy fails.
+     */
+    public Graph clone(){
+
+        Graph g = new Graph();
+
+        for(Node n : this.getNodes()){
+            g.addNode(n.clone());
+        }
+
+        for(Edge e : this.getEdges()){
+
+            try{
+
+                g.addEdge(new Edge(
+                        g.getNodes().get(this.nodes.indexOf(e.getSrc())),
+                        g.getNodes().get(this.nodes.indexOf(e.getTar())),
+                        e.getLabel()));
+
+            }catch(GraphException ge){
+                return null;
+            }
+        }
+
+        return g;
+    }
+
+    /**
+     * Creates a subgraph of the current graph. The resulting subgraph will
+     * point to the same Node and Edge objects as the original graph, i.e., changes to
+     * the subgraph will result in changes to the original graph.
+     *
+     * To make an independent subgraph invoke subgraph.clone().
+     *
+     * @param subNodes nodes from the original graph to keep in the subgraph.
+     * @param subEdges edges from the original graph to keep in the subgraph, src and tar of these edges must be subNodes.
+     *
+     * @return a new Graph object that references the Node and Edge objects that comprise a subgraph of this graph.
+     *
+     * @throws GraphException if the subgraph cannot be generated from the provided parameters.
+     */
+    public Graph subgraph(List<Node> subNodes, List<Edge> subEdges) throws GraphException {
+
+        Graph g = new Graph();
+
+        for(Node n : subNodes){
+            if(this.nodes.contains(n)){
+                g.addNode(n);
+            }else{
+                throw new GraphException("subgraph Node is not part of main/host graph.");
+            }
+        }
+
+        for(Edge e : subEdges){
+            if(this.edges.contains(e)){
+                g.addEdge(e);
+            }else{
+                throw new GraphException("subgraph Edge is not part of main/host graph.");
+            }
+        }
+
+        return g;
+    }
+
     // ---------- GETTERS AND SETTERS ----------
 
     public List<Node> getNodes(){

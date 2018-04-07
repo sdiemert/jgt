@@ -88,12 +88,8 @@ public class Matcher {
         // 8) Handle results of Z3
 
         if(ret == Status.SATISFIABLE){
-
             return this.makeMorphismFromModel(g, h, s.getModel());
-
         }else{
-
-            System.out.println("UNSAT");
             return null;
         }
     }
