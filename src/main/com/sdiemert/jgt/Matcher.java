@@ -379,7 +379,7 @@ public class Matcher {
             // gEdgeLabel(e) == e.label
             exprs.add(ctx.mkEq(
                     this.mkUnaryBVFunctionApp(this.gEdgeLabel, i, this.gEdgeBVSize),
-                    this.mkBVNum(this.edgeLabels.indexOf(g.getEdges().get(i).getLabel()), this.nodeLabelBVSize)));
+                    this.mkBVNum(this.edgeLabels.indexOf(g.getEdges().get(i).getLabel()), this.edgeLabelBVSize)));
         }
 
         // 2.2) Define edge based functions for Graph h
@@ -397,7 +397,7 @@ public class Matcher {
             // hEdgeLabel(e) == e.label
             exprs.add(ctx.mkEq(
                     this.mkUnaryBVFunctionApp(this.hEdgeLabel, i, this.hEdgeBVSize),
-                    this.mkBVNum(this.edgeLabels.indexOf(h.getEdges().get(i).getLabel()), this.nodeLabelBVSize)));
+                    this.mkBVNum(this.edgeLabels.indexOf(h.getEdges().get(i).getLabel()), this.edgeLabelBVSize)));
         }
 
         // NOTE: functions in Z3 are total, i.e., each input must have an output value.

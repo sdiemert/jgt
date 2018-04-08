@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 public class RuleTest {
@@ -62,6 +63,198 @@ public class RuleTest {
         assertNotNull(r.lhsGraph);
         assertEquals(3, r.lhsGraph.getNodes().size());
         assertEquals(2, r.lhsGraph.getEdges().size());
+    }
+
+    @Test
+    public void testRuleApplyAdditions() throws GraphException {
+        Graph ruleGraph = new Graph();
+        Node rn0 = new Node("A");
+        Node rn1 = new Node("B");
+        Node rn2 = new Node("C");
+        Edge re0 = new Edge(rn0, rn1, "e");
+        Edge re1 = new Edge(rn1, rn2, "e");
+        Edge re2 = new Edge(rn2, rn0, "e");
+        ruleGraph.addNodes(rn0, rn1, rn2);
+        ruleGraph.addEdges(re0, re1, re2);
+
+        ArrayList<Node> addNodes = new ArrayList<Node>();
+        addNodes.add(rn2);
+        ArrayList<Edge> addEdges = new ArrayList<Edge>();
+        addEdges.add(re1);
+        addEdges.add(re2);
+
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, null, null);
+
+        Graph host = new Graph();
+        Node hn0 = new Node("A");
+        Node hn1 = new Node("B");
+        Edge he0 = new Edge(hn0, hn1, "e");
+        host.addNodes(hn0, hn1);
+        host.addEdges(he0);
+
+        boolean ret = r.apply(host);
+
+        assertTrue(ret);
+        assertEquals(3, host.getEdges().size());
+        assertEquals(3, host.getNodes().size());
+        assertEquals("A", host.getNodes().get(0).getLabel());
+        assertEquals("B", host.getNodes().get(1).getLabel());
+        assertEquals("C", host.getNodes().get(2).getLabel());
+    }
+
+    @Test
+    public void testRuleApplyDeletes() throws GraphException {
+        Graph ruleGraph = new Graph();
+        Node rn0 = new Node("A");
+        Node rn1 = new Node("B");
+        Node rn2 = new Node("C");
+        Edge re0 = new Edge(rn0, rn1, "e");
+        Edge re1 = new Edge(rn1, rn2, "e");
+        Edge re2 = new Edge(rn2, rn0, "e");
+        ruleGraph.addNodes(rn0, rn1, rn2);
+        ruleGraph.addEdges(re0, re1, re2);
+
+        ArrayList<Node> delNodes = new ArrayList<Node>();
+        delNodes.add(rn2);
+        ArrayList<Edge> delEdges = new ArrayList<Edge>();
+        delEdges.add(re1);
+        delEdges.add(re2);
+
+        Rule r = new Rule(ruleGraph, null, null, delNodes, delEdges);
+
+        Graph host = new Graph();
+        Node hn0 = new Node("A");
+        Node hn1 = new Node("B");
+        Node hn2 = new Node("C");
+        Edge he0 = new Edge(hn0, hn1, "e");
+        Edge he1 = new Edge(hn1, hn2, "e");
+        Edge he2 = new Edge(hn2, hn0, "e");
+        host.addNodes(hn0, hn1, hn2);
+        host.addEdges(he0, he1, he2);
+
+        boolean ret = r.apply(host);
+
+        assertTrue(ret);
+        assertEquals(1, host.getEdges().size());
+        assertEquals(2, host.getNodes().size());
+        assertEquals("A", host.getNodes().get(0).getLabel());
+        assertEquals("B", host.getNodes().get(1).getLabel());
+    }
+
+    @Test
+    public void testRuleApplyDeletesAndAdditions() throws GraphException {
+        Graph ruleGraph = new Graph();
+        Node rn0 = new Node("A");
+        Node rn1 = new Node("B");
+        Node rn2 = new Node("C");
+        Node rn3 = new Node("D");
+        Edge re0 = new Edge(rn0, rn1, "e");
+        Edge re1 = new Edge(rn1, rn2, "e");
+        Edge re2 = new Edge(rn2, rn0, "e");
+        Edge re3 = new Edge(rn1, rn3, "f");
+        Edge re4 = new Edge(rn3, rn0, "f");
+        ruleGraph.addNodes(rn0, rn1, rn2, rn3);
+        ruleGraph.addEdges(re0, re1, re2, re3, re4);
+
+        ArrayList<Node> delNodes = new ArrayList<Node>();
+        ArrayList<Edge> delEdges = new ArrayList<Edge>();
+        ArrayList<Node> addNodes = new ArrayList<Node>();
+        ArrayList<Edge> addEdges = new ArrayList<Edge>();
+        delNodes.add(rn2);
+        delEdges.add(re1);
+        delEdges.add(re2);
+        addNodes.add(rn3);
+        addEdges.add(re3);
+        addEdges.add(re4);
+
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges);
+
+        Graph host = new Graph();
+        Node hn0 = new Node("A");
+        Node hn1 = new Node("B");
+        Node hn2 = new Node("C");
+        Edge he0 = new Edge(hn0, hn1, "e");
+        Edge he1 = new Edge(hn1, hn2, "e");
+        Edge he2 = new Edge(hn2, hn0, "e");
+        host.addNodes(hn0, hn1, hn2);
+        host.addEdges(he0, he1, he2);
+
+        boolean ret = r.apply(host);
+
+        assertTrue(ret);
+        assertEquals(3, host.getEdges().size());
+        assertEquals(3, host.getNodes().size());
+        assertEquals("A", host.getNodes().get(0).getLabel());
+        assertEquals("B", host.getNodes().get(1).getLabel());
+        assertEquals("D", host.getNodes().get(2).getLabel());
+        assertTrue(host.getUniqueEdgeLabels().contains("e"));
+        assertTrue(host.getUniqueEdgeLabels().contains("f"));
+    }
+
+    @Test
+    public void testRuleDoesNotApply() throws GraphException {
+        Graph ruleGraph = new Graph();
+        Node rn0 = new Node("A");
+        Node rn1 = new Node("FOO");
+        Edge re0 = new Edge(rn0, rn1, "e");
+        ruleGraph.addNodes(rn0, rn1);
+        ruleGraph.addEdges(re0);
+
+        ArrayList<Node> delNodes = new ArrayList<Node>();
+        ArrayList<Edge> delEdges = new ArrayList<Edge>();
+        ArrayList<Node> addNodes = new ArrayList<Node>();
+        ArrayList<Edge> addEdges = new ArrayList<Edge>();
+        delNodes.add(rn1);
+
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges);
+
+        Graph host = new Graph();
+        Node hn0 = new Node("A");
+        Node hn1 = new Node("B");
+        Node hn2 = new Node("C");
+        Edge he0 = new Edge(hn0, hn1, "e");
+        Edge he1 = new Edge(hn1, hn2, "e");
+        Edge he2 = new Edge(hn2, hn0, "e");
+        host.addNodes(hn0, hn1, hn2);
+        host.addEdges(he0, he1, he2);
+
+        boolean ret = r.apply(host);
+
+        assertFalse(ret);
+    }
+
+    @Test
+    public void testRuleDeletesOtherNodes() throws GraphException {
+        Graph ruleGraph = new Graph();
+        Node rn0 = new Node("A");
+        Node rn1 = new Node("B");
+        Edge re0 = new Edge(rn0, rn1, "e");
+        ruleGraph.addNodes(rn0, rn1);
+        ruleGraph.addEdges(re0);
+
+        ArrayList<Node> delNodes = new ArrayList<Node>();
+        ArrayList<Edge> delEdges = new ArrayList<Edge>();
+        ArrayList<Node> addNodes = new ArrayList<Node>();
+        ArrayList<Edge> addEdges = new ArrayList<Edge>();
+        delNodes.add(rn1);
+
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges);
+
+        Graph host = new Graph();
+        Node hn0 = new Node("A");
+        Node hn1 = new Node("B");
+        Node hn2 = new Node("C");
+        Edge he0 = new Edge(hn0, hn1, "e");
+        Edge he1 = new Edge(hn1, hn2, "e");
+        Edge he2 = new Edge(hn2, hn0, "e");
+        host.addNodes(hn0, hn1, hn2);
+        host.addEdges(he0, he1, he2);
+
+        boolean ret = r.apply(host);
+
+        assertTrue(ret);
+        assertEquals(2, host.getNodes().size());
+        assertEquals(1, host.getEdges().size());
     }
 
 }
