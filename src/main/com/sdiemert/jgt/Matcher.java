@@ -421,7 +421,7 @@ public class Matcher {
             // gEdgeLabel(e) == 0
             exprs.add(ctx.mkEq(
                     this.mkUnaryBVFunctionApp(this.gEdgeLabel, i, this.gEdgeBVSize),
-                    this.mkBVNum(0, this.nodeLabelBVSize)));
+                    this.mkBVNum(0, this.edgeLabelBVSize)));
         }
 
         // 2.4) Complete edge functions for Graph h

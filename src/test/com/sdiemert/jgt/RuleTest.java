@@ -224,7 +224,7 @@ public class RuleTest {
     }
 
     @Test
-    public void testRuleDeletesOtherNodes() throws GraphException {
+    public void testRuleDeletesOtherEdgesAttachedToDeleteNodes() throws GraphException {
         Graph ruleGraph = new Graph();
         Node rn0 = new Node("A");
         Node rn1 = new Node("B");
