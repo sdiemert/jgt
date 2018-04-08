@@ -14,6 +14,8 @@ public class Rule {
     private List<Node> delNodes;
     private List<Edge> delEdges;
 
+    private Matcher matcher;
+
     /**
      * Makes a new transformation Rule.
      *
@@ -39,6 +41,8 @@ public class Rule {
 
         // determine the LHS once, otherwise we would have to do it every time the rule is applied.
         this.determineLHS();
+
+        matcher = new Matcher();
 
     }
 
@@ -78,9 +82,21 @@ public class Rule {
      * @throws GraphException if there is an error applying the rule.
      */
     public boolean apply(Graph host) throws GraphException {
-        Matcher m = new Matcher();
-        Morphism morph = m.findMorphism(this.lhsGraph, host);
+        matcher.reset();
+        Morphism morph = matcher.findMorphism(this.lhsGraph, host);
         return apply(host, morph);
+    }
+
+    /**
+     * Determines if there is a match between this rule's LHS graph and the provided host graph. Does not change
+     * the host graph. Invoke Rule.apply(Graph, Morphism) to apply the match.
+     *
+     * @param host the Graph to find the match in.
+     * @return a Morphism mapping between the LHS of the rule graph to the host graph.
+     */
+    public Morphism findMatch(Graph host){
+        this.matcher.reset();
+        return this.matcher.findMorphism(this.lhsGraph, host);
     }
 
     /**
@@ -96,6 +112,10 @@ public class Rule {
 
         // 1) if no match was found return false, leave h unchanged.
         if(morph == null){
+            return false;
+        }
+
+        if(host == null){
             return false;
         }
 

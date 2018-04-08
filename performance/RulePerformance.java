@@ -89,6 +89,6 @@ class RulePerformance{
 
     public static void main(String args[]) throws GraphException {
         //additionOnly();
-        //addAndDelete();
+        addAndDelete();
     }
 }
