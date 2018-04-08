@@ -9,10 +9,10 @@ public class Rule {
     Graph ruleGraph;
     Graph lhsGraph;
 
-    List<Node> addNodes;
-    List<Edge> addEdges;
-    List<Node> delNodes;
-    List<Edge> delEdges;
+    private List<Node> addNodes;
+    private List<Edge> addEdges;
+    private List<Node> delNodes;
+    private List<Edge> delEdges;
 
     /**
      * Makes a new transformation Rule.
@@ -70,22 +70,31 @@ public class Rule {
     }
 
     /**
-     * Applies the rule to the provided host graph, changes the provided
-     * graph in place.
+     * Applies the rule to the provided host graph, changes are applied in
+     * place to the host graph.
      *
      * @param host the graph to apply the transformation too.
      * @return true if the transformation completed, false if rule was not applied there was no match in host graph.
      * @throws GraphException if there is an error applying the rule.
      */
     public boolean apply(Graph host) throws GraphException {
+        Matcher m = new Matcher();
+        Morphism morph = m.findMorphism(this.lhsGraph, host);
+        return apply(host, morph);
+    }
 
-        Matcher matcher = new Matcher();
+    /**
+     * Applies the rule to the provided host graph via the provided morphism,
+     * changes are applied to the host graph in place.
+     *
+     * @param host the graph to apply the transformation too.
+     * @param morph a morphism between the rule LHS and the host graph.
+     * @return true if the transformation completed, false if rule was not applied there was no match in host graph.
+     * @throws GraphException if there is an error applying the rule.
+     */
+    public boolean apply(Graph host, Morphism morph) throws GraphException {
 
-        // 1) find a morphism between the host graph and the rule LHS graph.
-
-        Morphism morph = matcher.findMorphism(this.lhsGraph, host);
-
-        // 1.1) if no match was found return false, leave h unchanged.
+        // 1) if no match was found return false, leave h unchanged.
         if(morph == null){
             return false;
         }
