@@ -10,7 +10,7 @@ public class Matcher {
 
     // Each matcher keeps its own Context object. This may be memory intensive
     // but will help when implementing concurrent graph matches.
-    Context ctx = null;
+    private Context ctx = null;
 
     ArrayList<String> nodeLabels = null;
     ArrayList<String> edgeLabels = null;
@@ -26,24 +26,24 @@ public class Matcher {
     int edgeLabelBVSize = -1;
     int nodeDataBVSize = -1;
 
-    FuncDecl gSrc = null;
-    FuncDecl gTar = null;
-    FuncDecl gNodeLabel = null;
-    FuncDecl gEdgeLabel = null;
-    FuncDecl gNodeData = null;
+    private FuncDecl gSrc = null;
+    private FuncDecl gTar = null;
+    private FuncDecl gNodeLabel = null;
+    private FuncDecl gEdgeLabel = null;
+    private FuncDecl gNodeData = null;
 
-    FuncDecl hSrc = null;
-    FuncDecl hTar = null;
-    FuncDecl hNodeLabel = null;
-    FuncDecl hEdgeLabel = null;
-    FuncDecl hNodeData = null;
+    private FuncDecl hSrc = null;
+    private FuncDecl hTar = null;
+    private FuncDecl hNodeLabel = null;
+    private FuncDecl hEdgeLabel = null;
+    private FuncDecl hNodeData = null;
 
-    BoolExpr graphExpr = null;
+    private BoolExpr graphExpr = null;
 
-    BoolExpr restrictions = null;
+    private BoolExpr restrictions = null;
 
-    FuncDecl nodeMap = null;
-    FuncDecl edgeMap = null;
+    private FuncDecl nodeMap = null;
+    private FuncDecl edgeMap = null;
 
 
     public Matcher(){

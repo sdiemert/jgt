@@ -16,6 +16,8 @@ public class Rule {
 
     private Matcher matcher;
 
+    protected String name;
+
     /**
      * Makes a new transformation Rule.
      *
@@ -130,7 +132,8 @@ public class Rule {
 
         // 2.2) determine nodes to delete by index.
         for(Node n : this.delNodes){
-            Node delNode = host.getNodes().get(morph.mapNode(this.lhsGraph.getNodes().indexOf(n)));
+            int idx = this.lhsGraph.getNodes().indexOf(n);
+            Node delNode = host.getNodes().get(morph.mapNode(idx));
 
             nodesToDelete.add(delNode);
 
@@ -198,5 +201,13 @@ public class Rule {
         }
 
         return true;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
