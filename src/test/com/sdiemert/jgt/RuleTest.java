@@ -32,12 +32,12 @@ public class RuleTest {
 
         Rule r = new Rule(g, addNodes, addEdges, null, null);
 
-        assertNotNull(r.lhsGraph);
-        assertEquals(2, r.lhsGraph.getNodes().size());
-        assertEquals(1, r.lhsGraph.getEdges().size());
-        assertEquals("n1", r.lhsGraph.getNodes().get(0).getLabel());
-        assertEquals("n2", r.lhsGraph.getNodes().get(1).getLabel());
-        assertEquals("b", r.lhsGraph.getEdges().get(0).getLabel());
+        assertNotNull(r.matchGraph);
+        assertEquals(2, r.matchGraph.getNodes().size());
+        assertEquals(1, r.matchGraph.getEdges().size());
+        assertEquals("n1", r.matchGraph.getNodes().get(0).getLabel());
+        assertEquals("n2", r.matchGraph.getNodes().get(1).getLabel());
+        assertEquals("b", r.matchGraph.getEdges().get(0).getLabel());
     }
 
     @Test
@@ -60,9 +60,9 @@ public class RuleTest {
 
         Rule r = new Rule(g, null, null, delNodes, delEdges);
 
-        assertNotNull(r.lhsGraph);
-        assertEquals(3, r.lhsGraph.getNodes().size());
-        assertEquals(2, r.lhsGraph.getEdges().size());
+        assertNotNull(r.matchGraph);
+        assertEquals(3, r.matchGraph.getNodes().size());
+        assertEquals(2, r.matchGraph.getEdges().size());
     }
 
     @Test

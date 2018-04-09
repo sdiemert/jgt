@@ -85,6 +85,8 @@ public class GTSystem {
         return map;
     }
 
+
+
     public List<Rule> getRules(){
         return this.rules;
     }

@@ -4,19 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Rule {
+public class Rule extends Condition {
 
     Graph ruleGraph;
-    Graph lhsGraph;
-
     private List<Node> addNodes;
     private List<Edge> addEdges;
     private List<Node> delNodes;
     private List<Edge> delEdges;
-
-    private Matcher matcher;
-
-    protected String name;
 
     /**
      * Makes a new transformation Rule.
@@ -31,6 +25,8 @@ public class Rule {
      */
     public Rule(Graph g, List<Node> addNodes, List<Edge> addEdges, List<Node> delNodes, List<Edge> delEdges) throws GraphException {
 
+        super(g);
+
         this.ruleGraph  = g;
 
         this.addNodes = addNodes != null ? addNodes : new ArrayList<Node>();
@@ -44,15 +40,13 @@ public class Rule {
         // determine the LHS once, otherwise we would have to do it every time the rule is applied.
         this.determineLHS();
 
-        matcher = new Matcher();
-
     }
 
     /**
      * Gets the left hand side of the rule. This is the ruleGraph with the
      * addNodes and addEdges removed.
      *
-     * @throws GraphException if the resulting lhsGraph would be invalid.
+     * @throws GraphException if the resulting matchGraph would be invalid.
      */
     private void determineLHS() throws GraphException {
 
@@ -72,7 +66,7 @@ public class Rule {
             }
         }
 
-        lhsGraph = ruleGraph.subgraph(lhsNodes, lhsEdges);
+        this.matchGraph = this.ruleGraph.subgraph(lhsNodes, lhsEdges);
     }
 
     /**
@@ -85,20 +79,8 @@ public class Rule {
      */
     public boolean apply(Graph host) throws GraphException {
         matcher.reset();
-        Morphism morph = matcher.findMorphism(this.lhsGraph, host);
+        Morphism morph = matcher.findMorphism(this.matchGraph, host);
         return apply(host, morph);
-    }
-
-    /**
-     * Determines if there is a match between this rule's LHS graph and the provided host graph. Does not change
-     * the host graph. Invoke Rule.apply(Graph, Morphism) to apply the match.
-     *
-     * @param host the Graph to find the match in.
-     * @return a Morphism mapping between the LHS of the rule graph to the host graph.
-     */
-    public Morphism findMatch(Graph host){
-        this.matcher.reset();
-        return this.matcher.findMorphism(this.lhsGraph, host);
     }
 
     /**
@@ -127,12 +109,12 @@ public class Rule {
 
         // 2.1) determines edges to delete by index.
         for(Edge e : this.delEdges){
-            edgesToDelete.add(host.getEdges().get(morph.mapEdge(this.lhsGraph.getEdges().indexOf(e))));
+            edgesToDelete.add(host.getEdges().get(morph.mapEdge(this.matchGraph.getEdges().indexOf(e))));
         }
 
         // 2.2) determine nodes to delete by index.
         for(Node n : this.delNodes){
-            int idx = this.lhsGraph.getNodes().indexOf(n);
+            int idx = this.matchGraph.getNodes().indexOf(n);
             Node delNode = host.getNodes().get(morph.mapNode(idx));
 
             nodesToDelete.add(delNode);
@@ -172,7 +154,7 @@ public class Rule {
             }else{
                 // the src node already exists in the host graph,
                 // find it by mapping from the lhs graph to the host graph.
-                src = host.getNodes().get(morph.mapNode(this.lhsGraph.getNodes().indexOf(e.getSrc())));
+                src = host.getNodes().get(morph.mapNode(this.matchGraph.getNodes().indexOf(e.getSrc())));
             }
 
             if(this.addNodes.contains(e.getTar())){
@@ -182,7 +164,7 @@ public class Rule {
             }else{
                 // the tar node already exists in the host graph.
                 // find it by mapping from the lhs graph to the host graph.
-                tar = host.getNodes().get(morph.mapNode(this.lhsGraph.getNodes().indexOf(e.getTar())));
+                tar = host.getNodes().get(morph.mapNode(this.matchGraph.getNodes().indexOf(e.getTar())));
             }
 
             host.addEdge(new Edge(src, tar, e.getLabel()));
@@ -203,11 +185,4 @@ public class Rule {
         return true;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
