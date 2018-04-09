@@ -1,5 +1,6 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
+import com.sdiemert.jgt.core.*;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
 import com.microsoft.z3.*;
 import org.jetbrains.annotations.Contract;

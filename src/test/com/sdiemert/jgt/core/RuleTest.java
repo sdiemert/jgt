@@ -1,5 +1,6 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
+import com.sdiemert.jgt.core.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertNotEquals;
 public class RuleTest {
 
     @Test
-    public void testDetermineLHS() throws GraphException{
+    public void testDetermineLHS() throws GraphException {
         Graph g = new Graph();
 
         Node n0 = new Node("n0");

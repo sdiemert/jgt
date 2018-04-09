@@ -1,4 +1,4 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
 import java.util.ArrayList;
 import java.util.List;

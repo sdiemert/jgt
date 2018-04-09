@@ -1,4 +1,9 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.util;
+
+import com.sdiemert.jgt.core.Edge;
+import com.sdiemert.jgt.core.Graph;
+import com.sdiemert.jgt.core.GraphException;
+import com.sdiemert.jgt.core.Node;
 
 public class GraphBuilder {
 
@@ -12,7 +17,7 @@ public class GraphBuilder {
      *
      * @throws GraphException if there was an error generating the Graph.
      */
-    Graph fromMatrix(boolean[][] M, int size) throws GraphException{
+    public Graph fromMatrix(boolean[][] M, int size) throws GraphException{
 
         assert(M.length == size);
 
@@ -49,7 +54,7 @@ public class GraphBuilder {
      *
      * @throws GraphException if there was an error generating the Graph.
      */
-    Graph fromMatrix(String[][] M, String[] nodeLabels, int size) throws GraphException{
+    public Graph fromMatrix(String[][] M, String[] nodeLabels, int size) throws GraphException{
 
         assert(M.length == size && nodeLabels.length == size);
 

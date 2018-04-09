@@ -1,4 +1,4 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
 public class GraphException extends Exception {
 

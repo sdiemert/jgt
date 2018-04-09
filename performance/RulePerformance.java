@@ -1,11 +1,11 @@
 
-import com.sdiemert.jgt.*;
+import com.sdiemert.jgt.core.*;
 
 import java.util.ArrayList;
 
 class RulePerformance{
 
-    public static void additionOnly() throws GraphException{
+    public static void additionOnly() throws GraphException {
         Graph ruleGraph = new Graph();
 
         Node n0 = new Node("A");

@@ -1,5 +1,6 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
+import com.sdiemert.jgt.util.GraphBuilder;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -8,7 +9,7 @@ import static org.junit.Assert.*;
 public class GraphBuilderTest {
 
     @Test
-    public void testFromMatrix() throws GraphException{
+    public void testFromMatrix() throws GraphException {
 
         boolean[][] M = {{false, true},
                           {false, false}};

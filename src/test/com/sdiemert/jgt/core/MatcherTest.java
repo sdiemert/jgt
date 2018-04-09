@@ -1,5 +1,6 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
+import com.sdiemert.jgt.util.GraphBuilder;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -60,7 +61,7 @@ public class MatcherTest {
     }
 
     @Test
-    public void testUnifyEdgeLabels() throws GraphException{
+    public void testUnifyEdgeLabels() throws GraphException {
 
         Node ng0 = new Node();
         Node ng1 = new Node();

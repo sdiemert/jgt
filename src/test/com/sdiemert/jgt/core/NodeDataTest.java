@@ -1,5 +1,7 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
+import com.sdiemert.jgt.core.IntNodeData;
+import com.sdiemert.jgt.core.StringNodeData;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

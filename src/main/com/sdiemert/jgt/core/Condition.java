@@ -1,4 +1,4 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
 /**
  * A Graph Condition is a sub-graph that can be matched into a host graph. The condition itself

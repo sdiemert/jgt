@@ -1,8 +1,6 @@
-package com.sdiemert.jgt;
+package com.sdiemert.jgt.core;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
@@ -13,7 +11,7 @@ import static org.junit.Assert.assertNull;
 public class ConditionTest {
 
     @Test
-    public void testCondition() throws GraphException{
+    public void testCondition() throws GraphException {
         Graph g = new Graph();
         Node n0 = new Node("A");
         Node n1 = new Node("B");
