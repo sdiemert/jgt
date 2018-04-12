@@ -1,0 +1,28 @@
+
+Goal: Provide a textual means of interacting with GTSs.
+
+Operations:
+
+- new system
+- new rule
+- new graph
+- new node
+- new edge
+
+- show systems
+- show unbound rules
+- show unbound graphs
+- show unbound nodes
+
+- load system
+- load graph
+- load rule
+
+- combine existing GTSs
+
+- set working dir
+
+
+Random Thoughts:
+
+- extend this to a "REPL" like system as per Grape.

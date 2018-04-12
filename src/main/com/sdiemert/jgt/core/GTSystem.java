@@ -40,6 +40,16 @@ public class GTSystem {
     }
 
     /**
+     * Combines the rule set of sys with the existing rule of this GTSystem.
+     * @param sys a GTS system to merge into this system/
+     */
+    public void merge(GTSystem sys){
+        for(Rule r : sys.getRules()){
+            this.addRule(r);
+        }
+    }
+
+    /**
      * Attempts to apply a Rule (non-deterministically chosen) from the list of Rules.
      *
      * @param host the graph to attempt to apply the rule too.
