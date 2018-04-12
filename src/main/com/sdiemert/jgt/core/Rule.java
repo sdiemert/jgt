@@ -185,4 +185,23 @@ public class Rule extends Condition {
         return true;
     }
 
+    public Graph getRuleGraph(){
+        return this.ruleGraph;
+    }
+
+    public List<Node> getAddNodes() {
+        return addNodes;
+    }
+
+    public List<Edge> getAddEdges() {
+        return addEdges;
+    }
+
+    public List<Node> getDelNodes() {
+        return delNodes;
+    }
+
+    public List<Edge> getDelEdges() {
+        return delEdges;
+    }
 }
