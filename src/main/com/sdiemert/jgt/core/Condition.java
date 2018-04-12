@@ -49,4 +49,8 @@ public class Condition {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Graph getMatchGraph(){
+        return this.matchGraph;
+    }
 }

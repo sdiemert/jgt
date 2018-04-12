@@ -21,10 +21,15 @@ public class RuleVerifier {
     public VerificationResult check(Rule rule){
 
         GraphVerifier gv = new GraphVerifier();
+        ConditionVerifier cv = new ConditionVerifier();
 
         VerificationResult result;
 
-        if((result = gv.checkGraphDanglingEdges(rule.getRuleGraph())).isFail()){
+        if((result = cv.check(rule)).isFail()) {
+
+            return result;
+
+        } else if((result = gv.check(rule.getRuleGraph())).isFail()){
 
             return result;
 

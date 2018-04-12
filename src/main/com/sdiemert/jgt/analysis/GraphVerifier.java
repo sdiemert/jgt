@@ -11,6 +11,10 @@ import com.sdiemert.jgt.core.Node;
 
 import static com.sdiemert.jgt.analysis.VerificationResult.VerificationResultType.FAIL_DUPLICATE_ELEMENT_REFERENCE;
 
+/**
+ * Contains methods to check the integrity of a Graph object. Note that some
+ * of these methods may be computationally expensive on large graphs.
+ */
 public class GraphVerifier {
 
     /**
