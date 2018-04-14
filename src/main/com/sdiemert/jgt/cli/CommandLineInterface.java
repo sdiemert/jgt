@@ -12,8 +12,8 @@ public class CommandLineInterface {
 
     private Matcher rootMatcher = Pattern.compile(
             "\\s*("
-            +Commands.VERB_NEW+"|"+Commands.VERB_LOAD+"|"+Commands.VERB_SHOW+"|"+Commands.VERB_DEL
-            +")\\s+(.*)").matcher("");
+            +Commands.VERB_NEW+"|"+Commands.VERB_LOAD+"|"+Commands.VERB_SHOW+"|"+Commands.VERB_DEL+"|"+Commands.VERB_ADD
+            +")\\s*(.*)").matcher("");
 
     private Matcher nounMatcher = Pattern.compile(
             "(" +Commands.NOUN_SYS+"|"+Commands.NOUN_RULE+"|"
@@ -30,6 +30,8 @@ public class CommandLineInterface {
     private Matcher nodeMatcher = Pattern.compile("\"([A-Za-z0-9]+)\"(\\s+(\"([A-Za-z0-9]+)\"|([0-9]+)))?\\s*(.*)").matcher("");
 
     private Matcher edgeMatcher = Pattern.compile("\\s*("+Commands.ID+")\\s+("+Commands.ID+")\\s+\"([A-Za-z0-9]+)\"\\s*(.*)").matcher("");
+
+    private Matcher addMatcher = Pattern.compile("\\s*(("+Commands.ID+"\\s+)+)to\\s+("+Commands.ID+")").matcher("");
 
     private Session session;
 
@@ -77,7 +79,7 @@ public class CommandLineInterface {
             if(cmdRoot.equals(Commands.VERB_NEW)) parseNewCommand(rootMatcher.group(2), out);
             else if(cmdRoot.equals(Commands.VERB_LOAD)) parseLoadCommand(rootMatcher.group(2), out);
             else if(cmdRoot.equals(Commands.VERB_SHOW)) parseShowCommand(rootMatcher.group(2), out);
-            else if(cmdRoot.equals(Commands.VERB_EXIT)) parseShowCommand(rootMatcher.group(2), out);
+            else if(cmdRoot.equals(Commands.VERB_ADD)) parseAddCommand(rootMatcher.group(2), out);
             else printTopLevelCommandErrorMessage(cmd, out);
 
         }else{
@@ -89,24 +91,64 @@ public class CommandLineInterface {
         return false;
     }
 
+    private void parseAddCommand(String cmd, PrintStream out){
+
+        // expect: ID ID ID ... to ID
+
+        addMatcher.reset(cmd);
+
+        if(addMatcher.find()){
+
+            // the first group will be list (space separated) of ids to add.
+            // the last group will be the id to add to
+
+            String parentId = addMatcher.group(addMatcher.groupCount());
+
+            for(String id : addMatcher.group(1).split("\\s+")){
+                try {
+                    session.add(parentId, id);
+                }catch(GraphException e){
+                    out.println(e.getMessage());
+                }
+            }
+
+        }else{
+
+            printAddCommandErrorMessage(cmd, out);
+
+        }
+
+    }
+
     private void parseShowCommand(String cmd, PrintStream out) {
 
         String noun = null;
         nounMatcher.reset(cmd);
+        whiteSpaceMatcher.reset(cmd);
 
-        if(nounMatcher.find()){
+        if(nounMatcher.find()) {
 
             noun = nounMatcher.group(1);
 
-            if(noun.equals(Commands.NOUN_SYS)) showSystems(out);
+            if (noun.equals(Commands.NOUN_SYS)) showSystems(out);
             else if (noun.equals(Commands.NOUN_GRAPH)) showGraphs(out);
             else if (noun.equals(Commands.NOUN_RULE)) showRules(out);
             else if (noun.equals(Commands.NOUN_COND)) showConditions(out);
             else if (noun.equals(Commands.NOUN_NODE)) showNodes(out);
             else if (noun.equals(Commands.NOUN_EDGE)) showEdges(out);
-            else{
+            else {
                 printShowErrorMessage(cmd, out);
             }
+
+        }else if(whiteSpaceMatcher.find()){
+
+            showSystems(out);
+            showGraphs(out);
+            showRules(out);
+            showConditions(out);
+            showNodes(out);
+            showEdges(out);
+
         }else{
             printShowErrorMessage(cmd, out);
         }
@@ -187,6 +229,22 @@ public class CommandLineInterface {
     }
 
     private void parseNewRuleCommand(String cmd, PrintStream out) throws Exception{
+
+        String id = null;
+        assignmentMatcher.reset(cmd);
+        whiteSpaceMatcher.reset(cmd);
+
+        if(assignmentMatcher.find()){
+
+            session.newGraph(assignmentMatcher.group(1));
+
+        }else if(whiteSpaceMatcher.find()){
+
+            session.newGraph();
+
+        } else{
+            printAssignmentMatchError(cmd, out);
+        }
 
     }
 
@@ -397,10 +455,19 @@ public class CommandLineInterface {
         out.println();
     }
 
+    private void printAddCommandErrorMessage(String cmd, PrintStream out){
+        out.println("\n"+Commands.NOT_REC+": '" + cmd + "'");
+        out.println("Try:");
+        out.println("\tadd <id>* to <id>");
+        out.println("For example:");
+        out.println("\tnew node \"A\" 1 -> n0");
+        out.println("\tnew graph -> g");
+        out.println("\tadd n0 to g");
+        out.println();
+    }
+
     private void printInvalidEdgeErrorMessage(PrintStream out){
         out.println("\nCould not create new edge, both source and target nodes must exist.\n");
     }
-
-
 
 }

@@ -7,6 +7,7 @@ public class Commands {
     public final static String VERB_SHOW = "show";
     public final static String VERB_EXIT = "exit";
     public final static String VERB_DEL = "delete";
+    public final static String VERB_ADD = "add";
 
     public final static String NOUN_SYS = "system";
     public final static String NOUN_GRAPH = "graph";

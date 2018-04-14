@@ -133,4 +133,28 @@ public class Session {
         }
         return newEdge(id, src, tar, label);
     }
+
+    public boolean add(String parentId, String childId) throws GraphException {
+
+        if(graphs.containsKey(parentId)){
+            if(nodes.containsKey(childId)){
+                graphs.get(parentId).addNode(nodes.get(childId));
+                nodes.remove(childId);
+                return true;
+            }else if(edges.containsKey(childId)){
+                graphs.get(parentId).addEdge(edges.get(childId));
+                edges.remove(childId);
+                return true;
+            }else{
+                return false;
+            }
+        }else if(systems.containsKey(parentId) && rules.containsKey(childId)){
+            systems.get(parentId).addRule(rules.get(childId));
+            rules.remove(childId);
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 }
