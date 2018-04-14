@@ -33,4 +33,7 @@ public abstract class NodeData {
      */
     public abstract NodeData clone();
 
+
+    public abstract String toString();
+
 }

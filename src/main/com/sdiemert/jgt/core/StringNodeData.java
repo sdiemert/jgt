@@ -27,4 +27,8 @@ public class StringNodeData extends NodeData {
     public void setVal(String val) {
         this.val = val;
     }
+
+    public String toString(){
+        return val;
+    }
 }

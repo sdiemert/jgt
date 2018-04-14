@@ -27,4 +27,8 @@ public class IntNodeData extends NodeData {
     public void setVal(int val) {
         this.val = val;
     }
+
+    public String toString(){
+        return ""+this.getVal();
+    }
 }
