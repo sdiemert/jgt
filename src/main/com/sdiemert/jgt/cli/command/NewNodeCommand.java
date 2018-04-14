@@ -2,6 +2,7 @@ package com.sdiemert.jgt.cli.command;
 
 import com.sdiemert.jgt.cli.scope.GraphScope;
 import com.sdiemert.jgt.cli.scope.Scope;
+import com.sdiemert.jgt.cli.scope.ScopeException;
 
 public class NewNodeCommand extends Command {
 
@@ -14,7 +15,12 @@ public class NewNodeCommand extends Command {
         this.sym = sym;
     }
 
-    public Scope apply(GraphScope s){
+    public Scope apply(GraphScope s) throws ScopeException{
+
+        if(this.adj != null){
+            throw new ScopeException("Cannot create a '"+this.adj+"' node in a graph (only allowed in rules)");
+        }
+
         s.addNode(this.sym, this.label, this.data);
         return s;
     }

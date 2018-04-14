@@ -1,9 +1,6 @@
 package com.sdiemert.jgt.cli;
 
-import com.sdiemert.jgt.cli.command.Command;
-import com.sdiemert.jgt.cli.command.NewGraphCommand;
-import com.sdiemert.jgt.cli.command.NewNodeCommand;
-import com.sdiemert.jgt.cli.command.ShowCommand;
+import com.sdiemert.jgt.cli.command.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,11 +35,15 @@ public class Parser {
 
     Matcher newMatcher = Pattern.compile(
                     "(("+Constants.ADJ_ADD+"|"+Constants.ADJ_DEL+")\\s+)?" +
-                    "("+Constants.NOUN_GRAPH+"|"+Constants.NOUN_NODE+")"+
+                    "("+Constants.NOUN_GRAPH+"|"+Constants.NOUN_NODE+"|"+Constants.NOUN_EDGE+")"+
                     "(\\s+(.*))?"
-    ).matcher("");
+        ).matcher("");
 
     Matcher newNodeArgMatcher = Pattern.compile("(\"[A-Za-z0-9]+\")(\\s+(\"[A-Za-z0-9]+\"|[0-9]+))?").matcher("");
+
+    Matcher newEdgeArgMatcher = Pattern.compile(
+            "("+Constants.ID+")\\s+("+Constants.ID+")\\s+(\"[A-Za-z0-9]+\")"
+        ).matcher("");
 
     public Command command(String in) throws ParserException{
 
@@ -117,6 +118,13 @@ public class Parser {
 
                 return (new NewGraphCommand(sym));
 
+            }else if(noun.equals(Constants.NOUN_EDGE)){
+
+                NewEdgeCommand cmd = new NewEdgeCommand(sym);
+                cmd.setAdj(adj);
+                parseNewEdgeArguments(args, cmd);
+                return cmd;
+
             }else{
                 throw new ParserException("Failed to parse: "+in);
             }
@@ -133,6 +141,17 @@ public class Parser {
             cmd.setData(newNodeArgMatcher.group(3));
         }else{
             throw new ParserException("Invalid arguments to new node: '"+in+"'");
+        }
+    }
+
+    void parseNewEdgeArguments(String in, NewEdgeCommand cmd) throws ParserException{
+        newEdgeArgMatcher.reset(in);
+        if(newEdgeArgMatcher.find()){
+            cmd.setSrc(newEdgeArgMatcher.group(1));
+            cmd.setTar(newEdgeArgMatcher.group(2));
+            cmd.setLabel(newEdgeArgMatcher.group(3));
+        }else{
+            throw new ParserException("Invalid arguments to new edge: '"+in+"'");
         }
     }
 

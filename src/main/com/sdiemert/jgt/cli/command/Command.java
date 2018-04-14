@@ -1,6 +1,8 @@
 package com.sdiemert.jgt.cli.command;
 
 import com.sdiemert.jgt.cli.scope.*;
+import com.sdiemert.jgt.core.Graph;
+import com.sdiemert.jgt.core.GraphException;
 
 import java.io.PrintStream;
 
@@ -20,7 +22,7 @@ public abstract class Command {
         return false;
     }
 
-    public Scope apply(Scope s) throws ScopeException{
+    public Scope apply(Scope s) throws ScopeException, GraphException {
 
         if(s instanceof GraphScope) return apply((GraphScope) s);
         else if(s instanceof GlobalScope) return apply((GlobalScope) s);
@@ -32,7 +34,7 @@ public abstract class Command {
 
     }
 
-    public Scope apply(GraphScope s) throws ScopeException {
+    public Scope apply(GraphScope s) throws ScopeException, GraphException {
         throw new ScopeException("Cannot apply this command to current scope.");
     }
 

@@ -44,6 +44,8 @@ public class CommandLineInterface {
                 printParserError(out, e.getMessage());
             }catch(ScopeException e){
                 printScopeError(out, e.getMessage());
+            }catch(GraphException e){
+                printError(out, e.getMessage());
             }
 
         }
@@ -68,6 +70,10 @@ public class CommandLineInterface {
     }
 
     private void printScopeError(PrintStream out, String err){
+        out.println(err);
+    }
+
+    private void printError(PrintStream out, String err){
         out.println(err);
     }
 

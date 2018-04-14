@@ -2,8 +2,7 @@ package com.sdiemert.jgt.cli;
 
 import com.sdiemert.jgt.cli.command.Command;
 import com.sdiemert.jgt.cli.scope.*;
-
-import java.io.PrintStream;
+import com.sdiemert.jgt.core.GraphException;
 
 public class Session {
 
@@ -13,7 +12,7 @@ public class Session {
         currScope = new GlobalScope();
     }
 
-    public void execute(Command c) throws ScopeException{
+    public void execute(Command c) throws ScopeException, GraphException {
         currScope = c.apply(currScope);
     }
 
