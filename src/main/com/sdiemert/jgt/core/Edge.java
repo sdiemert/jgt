@@ -30,6 +30,17 @@ public class Edge {
         this.label = "NONE";
     }
 
+
+    public Edge(String id, Node src, Node tar){
+
+        assert(src != null && tar != null);
+
+        this.src = src;
+        this.tar = tar;
+        this.id = id;
+        this.label = "NONE";
+    }
+
     /**
      * Creates a new directed labelled edge object that joins to nodes.
      * @param src the source node of the edge.
@@ -43,6 +54,15 @@ public class Edge {
         this.src = src;
         this.tar = tar;
         this.id = "edge-" + UUID.randomUUID().toString();
+        this.label = label;
+    }
+
+    public Edge(String id, Node src, Node tar, String label){
+        assert(src != null && tar != null && label != null);
+
+        this.src = src;
+        this.tar = tar;
+        this.id = id;
         this.label = label;
     }
 

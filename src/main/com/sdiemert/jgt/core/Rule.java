@@ -3,14 +3,16 @@ package com.sdiemert.jgt.core;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class Rule extends Condition {
 
     Graph ruleGraph;
-    private List<Node> addNodes;
-    private List<Edge> addEdges;
-    private List<Node> delNodes;
-    private List<Edge> delEdges;
+    private ArrayList<Node> addNodes;
+    private ArrayList<Edge> addEdges;
+    private ArrayList<Node> delNodes;
+    private ArrayList<Edge> delEdges;
+    String id;
 
     /**
      * Makes a new transformation Rule.
@@ -23,7 +25,7 @@ public class Rule extends Condition {
      *
      * @throws GraphException if rule graph or its LHS (without addNodes and addEdges) are not valid.
      */
-    public Rule(Graph g, List<Node> addNodes, List<Edge> addEdges, List<Node> delNodes, List<Edge> delEdges) throws GraphException {
+    public Rule(Graph g, ArrayList<Node> addNodes, ArrayList<Edge> addEdges, ArrayList<Node> delNodes, ArrayList<Edge> delEdges) throws GraphException {
 
         super(g);
 
@@ -39,6 +41,41 @@ public class Rule extends Condition {
 
         // determine the LHS once, otherwise we would have to do it every time the rule is applied.
         this.determineLHS();
+
+        this.id = "rule-"+UUID.randomUUID().toString();
+    }
+
+    /**
+     * Makes a new transformation Rule.
+     *
+     * @param id an identifier for this Rule.
+     * @param g the graph describing the Rule.
+     * @param addNodes references to Nodes in g that are to be added during rule application.
+     * @param addEdges references to Edges in g that are to be added during rule application.
+     * @param delNodes references to Nodes in g that are to be deleted during rule application.
+     * @param delEdges references to Edges in g that are to be deleted during rule application.
+     *
+     * @throws GraphException if rule graph or its LHS (without addNodes and addEdges) are not valid.
+     */
+    public Rule(String id, Graph g, ArrayList<Node> addNodes, ArrayList<Edge> addEdges, ArrayList<Node> delNodes, ArrayList<Edge> delEdges) throws GraphException {
+
+        super(g);
+
+        this.id = id;
+
+        this.ruleGraph  = g;
+
+        this.addNodes = addNodes != null ? addNodes : new ArrayList<Node>();
+        this.addEdges = addEdges != null ? addEdges : new ArrayList<Edge>();
+
+        this.delNodes = delNodes != null ? delNodes : new ArrayList<Node>();
+        this.delEdges = delEdges != null ? delEdges : new ArrayList<Edge>();
+
+        // TODO: Implement NACs.
+
+        // determine the LHS once, otherwise we would have to do it every time the rule is applied.
+        this.determineLHS();
+
 
     }
 
@@ -189,19 +226,23 @@ public class Rule extends Condition {
         return this.ruleGraph;
     }
 
-    public List<Node> getAddNodes() {
+    public ArrayList<Node> getAddNodes() {
         return addNodes;
     }
 
-    public List<Edge> getAddEdges() {
+    public ArrayList<Edge> getAddEdges() {
         return addEdges;
     }
 
-    public List<Node> getDelNodes() {
+    public ArrayList<Node> getDelNodes() {
         return delNodes;
     }
 
-    public List<Edge> getDelEdges() {
+    public ArrayList<Edge> getDelEdges() {
         return delEdges;
+    }
+
+    public String getId(){
+        return this.id;
     }
 }

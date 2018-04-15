@@ -16,6 +16,12 @@ public class Graph {
         this.id = "graph-"+UUID.randomUUID().toString();
     }
 
+    public Graph(String id){
+        this.nodes = new ArrayList<Node>();
+        this.edges = new ArrayList<Edge>();
+        this.id = id;
+    }
+
     /**
      * Adds a new node to the graph.
      *

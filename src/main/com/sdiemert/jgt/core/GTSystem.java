@@ -14,8 +14,16 @@ public class GTSystem {
 
     ArrayList<Rule> rules;
 
+    String id;
+
     public GTSystem(){
-         this.rules = new ArrayList<Rule>();
+        this.rules = new ArrayList<Rule>();
+        this.id = "system-"+UUID.randomUUID().toString();
+    }
+
+    public GTSystem(String id){
+        this.rules = new ArrayList<Rule>();
+        this.id = id;
     }
 
     /**
@@ -97,8 +105,11 @@ public class GTSystem {
 
 
 
-    public List<Rule> getRules(){
+    public ArrayList<Rule> getRules(){
         return this.rules;
     }
 
+    public String getId() {
+        return id;
+    }
 }

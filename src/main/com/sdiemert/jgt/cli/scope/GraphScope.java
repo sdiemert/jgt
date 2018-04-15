@@ -17,9 +17,25 @@ public class GraphScope extends Scope {
     public GraphScope(Scope parent, String sym){
         this.sym = sym;
         this.parent = parent;
-        this.graph = new Graph();
+        this.graph = new Graph(sym);
         this.scopeNodes = new HashMap<String, Node>();
         this.scopeEdges = new HashMap<String, Edge>();
+    }
+
+    public GraphScope(Scope parent, Graph g){
+        this.sym = g.getId();
+        this.parent = parent;
+        this.graph = g;
+        this.scopeNodes = new HashMap<String, Node>();
+        this.scopeEdges = new HashMap<String, Edge>();
+
+        for(Node n : g.getNodes()){
+            scopeNodes.put(n.getId(), n);
+        }
+
+        for(Edge e : g.getEdges()){
+            scopeEdges.put(e.getId(), e);
+        }
     }
 
     public String scopeAsString(){
@@ -39,14 +55,14 @@ public class GraphScope extends Scope {
             try{
 
                 IntNodeData d = new IntNodeData(Integer.parseInt(data));
-                n = new Node<IntNodeData>(label, d);
+                n = new Node<IntNodeData>(sym, label, d);
 
             }catch(NumberFormatException e){
                 StringNodeData d = new StringNodeData(data);
-                n = new Node<StringNodeData>(label, d);
+                n = new Node<StringNodeData>(sym, label, d);
             }
         }else{
-             n = new Node(label);
+             n = new Node(sym, label);
         }
 
         this.addNode(sym, n);
@@ -64,7 +80,7 @@ public class GraphScope extends Scope {
             throw new GraphException("Failed to add edge, both source and target must already exist.");
         }
 
-        this.addEdge(sym, new Edge(this.scopeNodes.get(src), this.scopeNodes.get(tar), label));
+        this.addEdge(sym, new Edge(sym, this.scopeNodes.get(src), this.scopeNodes.get(tar), label));
 
     }
 

@@ -61,4 +61,13 @@ public class GlobalScope extends Scope {
     public void add(String sym, GTSystem gt){
         this.systems.put(sym, gt);
     }
+
+    public HashMap<String, Graph> getGraphs(){
+        return this.graphs;
+    }
+
+    public HashMap<String, GTSystem> getSystems(){
+        return this.systems;
+    }
+
 }

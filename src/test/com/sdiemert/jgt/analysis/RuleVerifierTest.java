@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.sdiemert.jgt.analysis.VerificationResult.VerificationResultType.FAIL_ADD_DELETE_OVERLAP;
@@ -46,7 +47,7 @@ public class RuleVerifierTest {
 
         RuleVerifier rv = new RuleVerifier();
 
-        rule = new Rule(rg, Arrays.asList(rN0), Arrays.asList(rE0), null, null);
+        rule = new Rule(rg, new ArrayList<Node>(Arrays.asList(rN0)), new ArrayList<Edge>(Arrays.asList(rE0)), null, null);
 
         VerificationResult v = rv.check(rule);
 
@@ -60,7 +61,7 @@ public class RuleVerifierTest {
 
         RuleVerifier rv = new RuleVerifier();
 
-        rule = new Rule(rg, Arrays.asList(rN0), Arrays.asList(rE0), Arrays.asList(rN1, rN2), null);
+        rule = new Rule(rg, new ArrayList<Node>(Arrays.asList(rN0)), new ArrayList<Edge>(Arrays.asList(rE0)), new ArrayList<Node>(Arrays.asList(rN1, rN2)), null);
 
         // here we artificially create an overlapping node in both add and delete nodes.
         rule.getAddNodes().set(0, rN1);
@@ -81,7 +82,11 @@ public class RuleVerifierTest {
 
         RuleVerifier rv = new RuleVerifier();
 
-        rule = new Rule(rg, Arrays.asList(rN0), Arrays.asList(rE0), Arrays.asList(rN1, rN2), Arrays.asList(rE1));
+        rule = new Rule(rg,
+                new ArrayList<Node>(Arrays.asList(rN0)),
+                new ArrayList<Edge>(Arrays.asList(rE0)),
+                new ArrayList<Node>(Arrays.asList(rN1, rN2)),
+                new ArrayList<Edge>(Arrays.asList(rE1)));
 
         // here we artificially create an overlapping node in both add and delete nodes.
         rule.getAddEdges().set(0, rE1);

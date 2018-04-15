@@ -9,6 +9,7 @@ public class Constants {
     public final static String VERB_DEL = "delete";
     public final static String VERB_ADD = "add";
     public final static String VERB_BACK = "back";
+    public final static String VERB_PICK = "pick";
 
     public final static String NOUN_SYS = "system";
     public final static String NOUN_GRAPH = "graph";

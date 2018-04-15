@@ -30,6 +30,15 @@ public class RuleScope extends Scope {
         delEdges = new ArrayList<Edge>();
     }
 
+    public RuleScope(Scope parent, Rule rule){
+        this.sym = rule.getId();
+        this.ruleGraph = rule.getRuleGraph();
+        this.addNodes = rule.getAddNodes();
+        this.addEdges = rule.getAddEdges();
+        this.delNodes = rule.getDelNodes();
+        this.delEdges = rule.getDelEdges();
+    }
+
     public String scopeAsString(){
         return parent.scopeAsString() + "." + sym;
     }
