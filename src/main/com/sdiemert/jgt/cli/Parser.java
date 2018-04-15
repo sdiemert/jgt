@@ -30,7 +30,7 @@ public class Parser {
     Matcher assignmentMatcher = Pattern.compile("\\s*("+Constants.ID+")\\s*:\\s*(.*)").matcher("");
 
     Matcher verbMatcher = Pattern.compile(
-            "("+Constants.VERB_NEW+"|"+Constants.VERB_SHOW+")(\\s+(.*))?"
+            "("+Constants.VERB_NEW+"|"+Constants.VERB_SHOW+"|"+Constants.VERB_BACK+")(\\s+(.*))?"
     ).matcher("");
 
     Matcher newMatcher = Pattern.compile(
@@ -77,8 +77,10 @@ public class Parser {
 
         if(verb.equals(Constants.VERB_NEW)) {
             return parseNewCommand(sym, rest);
-        }else if(verb.equals(Constants.VERB_SHOW)){
+        }else if(verb.equals(Constants.VERB_SHOW)) {
             return new ShowCommand();
+        }else if(verb.equals(Constants.VERB_BACK)){
+            return new BackCommand();
         }else{
             throw new ParserException("Failed to parse: "+in);
         }

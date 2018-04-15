@@ -22,4 +22,9 @@ public class ShowCommand extends Command {
         return s;
     }
 
+    public Scope apply(GlobalScope s) throws ScopeException{
+        this.outputStream.println(s.show());
+        return s;
+    }
+
 }

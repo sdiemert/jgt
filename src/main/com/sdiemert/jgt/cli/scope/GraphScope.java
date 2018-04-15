@@ -125,4 +125,9 @@ public class GraphScope extends Scope {
         return null;
     }
 
+    public Scope exit() throws ScopeException{
+        this.parent.add(sym, this.graph);
+        return this.parent;
+    }
+
 }
