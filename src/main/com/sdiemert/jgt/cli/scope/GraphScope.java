@@ -86,7 +86,25 @@ public class GraphScope extends Scope {
 
     }
 
-    public String show(){
+    public String show(String k) throws ScopeException{
+
+        if(this.getScopeEdges().containsKey(k)){
+            Edge e = this.getScopeEdges().get(k);
+            return e.getId()+" : Edge "+e.getSrc().getId()+" "+e.getTar().getId()+" "+e.getLabel();
+        }else if(this.getScopeNodes().containsKey(k)){
+            Node n = this.getScopeNodes().get(k);
+            String s = n.getId() + " : Node "+n.getLabel();
+            if(n.getData() != null){
+                s += " "+n.getData().toString();
+            }
+            return s;
+        }else{
+            throw new ScopeException("Cannot find '"+k+"'");
+        }
+
+    }
+
+    public String show() throws ScopeException {
 
         StringBuilder sb = new StringBuilder();
 
@@ -96,14 +114,7 @@ public class GraphScope extends Scope {
             sb.append("\n");
             for (String k : this.scopeNodes.keySet()) {
                 sb.append("\t");
-                sb.append(k);
-                sb.append(" : ");
-                sb.append("Node ");
-                sb.append(scopeNodes.get(k).getLabel());
-                if (scopeNodes.get(k).getData() != null) {
-                    sb.append(" ");
-                    sb.append(scopeNodes.get(k).getData());
-                }
+                sb.append(this.show(k));
                 sb.append("\n");
             }
         }else{
@@ -116,14 +127,7 @@ public class GraphScope extends Scope {
             sb.append("\n");
             for (String k : this.scopeEdges.keySet()) {
                 sb.append("\t");
-                sb.append(k);
-                sb.append(" : ");
-                sb.append("Edge ");
-                sb.append(getSymByNode(scopeEdges.get(k).getSrc()));
-                sb.append(" ");
-                sb.append(getSymByNode(scopeEdges.get(k).getTar()));
-                sb.append(" ");
-                sb.append(scopeEdges.get(k).getLabel());
+                sb.append(this.show(k));
                 sb.append("\n");
             }
         }else{

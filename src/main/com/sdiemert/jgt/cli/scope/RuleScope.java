@@ -55,7 +55,11 @@ public class RuleScope extends Scope {
         return this.parent;
     }
 
-    public String show(){
+    public String show(String k) throws ScopeException{
+        return this.graphScope.show(k);
+    }
+
+    public String show() throws ScopeException{
 
         StringBuilder sb = new StringBuilder();
 

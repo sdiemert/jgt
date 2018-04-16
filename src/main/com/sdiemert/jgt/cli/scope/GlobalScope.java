@@ -19,7 +19,21 @@ public class GlobalScope extends Scope {
         return "";
     }
 
-    public String show(){
+    public String show(String k) throws ScopeException{
+
+        String s = k+" : ";
+
+        if(graphs.containsKey(k)){
+            s += "graph";
+        }else if(systems.containsKey(k)){
+            s += "system";
+        }else{
+            throw new ScopeException("Unknown identifier '"+k+"'");
+        }
+        return s;
+    }
+
+    public String show() throws ScopeException{
 
         StringBuilder sb = new StringBuilder();
 
@@ -29,8 +43,8 @@ public class GlobalScope extends Scope {
             sb.append("\n");
             for(String k : graphs.keySet()){
                 sb.append("\t");
-                sb.append(k);
-                sb.append(" : Graph\n");
+                sb.append(this.show(k));
+                sb.append("\n");
             }
 
         }else{
@@ -43,8 +57,8 @@ public class GlobalScope extends Scope {
             sb.append("\n");
             for(String k : systems.keySet()){
                 sb.append("\t");
-                sb.append(k);
-                sb.append(" : System\n");
+                sb.append(this.show(k));
+                sb.append("\n");
             }
         }else{
             sb.append("None\n");

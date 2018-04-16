@@ -83,7 +83,7 @@ public class Parser {
         if(verb.equals(Constants.VERB_NEW)) {
             return parseNewCommand(sym, rest);
         }else if(verb.equals(Constants.VERB_SHOW)) {
-            return new ShowCommand();
+            return new ShowCommand(rest);
         }else if(verb.equals(Constants.VERB_BACK)){
             return new BackCommand();
         }else if(verb.equals(Constants.VERB_PICK)){

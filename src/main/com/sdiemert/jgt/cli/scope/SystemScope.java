@@ -39,7 +39,19 @@ public class SystemScope extends Scope {
         this.sys.addRule(r);
     }
 
-    public String show(){
+    public String show(String k) throws ScopeException{
+
+        for(Rule r : this.getRules()){
+            if(r.getId().equals(k)){
+                return r.getId()+" : Rule";
+            }
+        }
+
+        throw new ScopeException("Unknown identifier '"+k+"'");
+
+    }
+
+    public String show() throws ScopeException{
         StringBuilder sb = new StringBuilder();
 
         sb.append("Rules:");

@@ -9,7 +9,7 @@ public abstract class Scope {
 
     public abstract String scopeAsString();
 
-    public abstract String show();
+    public abstract String show() throws ScopeException;
 
     public Scope exit() throws ScopeException, GraphException {
         return this;

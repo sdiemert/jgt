@@ -6,6 +6,8 @@ import java.io.PrintStream;
 
 public class ShowCommand extends Command {
 
+    String sym;
+
     public ShowCommand(PrintStream out){
         super(out);
     }
@@ -14,23 +16,57 @@ public class ShowCommand extends Command {
         super();
     }
 
+    public ShowCommand(String sym){
+        super();
+        this.sym = sym;
+    }
+
+    public ShowCommand(PrintStream out, String sym){
+        super(out);
+        this.sym = sym;
+    }
+
     public Scope apply(GraphScope s) throws ScopeException{
-        this.outputStream.println(s.show());
+
+        if(sym != null){
+            this.outputStream.println(s.show(sym));
+        }else{
+            this.outputStream.println(s.show());
+        }
+
+
         return s;
     }
 
     public Scope apply(GlobalScope s) throws ScopeException{
-        this.outputStream.println(s.show());
+
+        if(sym != null){
+            this.outputStream.println(s.show(sym));
+        }else{
+            this.outputStream.println(s.show());
+        }
+
         return s;
     }
 
     public Scope apply(SystemScope s) throws ScopeException{
-        this.outputStream.println(s.show());
+
+        if(sym != null){
+            this.outputStream.println(s.show(sym));
+        }else {
+            this.outputStream.println(s.show());
+        }
         return s;
     }
 
     public Scope apply(RuleScope s) throws ScopeException{
-        this.outputStream.println(s.show());
+
+        if(sym != null){
+            this.outputStream.println(s.show(sym));
+        }else{
+            this.outputStream.println(s.show());
+        }
+
         return s;
     }
 
