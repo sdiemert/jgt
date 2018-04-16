@@ -42,12 +42,13 @@ public class GraphScope extends Scope {
         return sym;
     }
 
-    public void addNode(String sym, Node n){
+    public Node addNode(String sym, Node n){
         this.graph.addNode(n);
         this.scopeNodes.put(sym, n);
+        return n;
     }
 
-    public void addNode(String sym, String label, String data){
+    public Node addNode(String sym, String label, String data){
 
         Node n;
 
@@ -65,22 +66,23 @@ public class GraphScope extends Scope {
              n = new Node(sym, label);
         }
 
-        this.addNode(sym, n);
+        return this.addNode(sym, n);
 
     }
 
-    public void addEdge(String sym, Edge e) throws GraphException {
+    public Edge addEdge(String sym, Edge e) throws GraphException {
         this.graph.addEdge(e);
         this.scopeEdges.put(sym, e);
+        return e;
     }
 
-    public void addEdge(String sym, String src, String tar, String label) throws GraphException{
+    public Edge addEdge(String sym, String src, String tar, String label) throws GraphException{
 
         if(!this.scopeNodes.containsKey(src) || !this.scopeNodes.containsKey(tar)){
             throw new GraphException("Failed to add edge, both source and target must already exist.");
         }
 
-        this.addEdge(sym, new Edge(sym, this.scopeNodes.get(src), this.scopeNodes.get(tar), label));
+        return this.addEdge(sym, new Edge(sym, this.scopeNodes.get(src), this.scopeNodes.get(tar), label));
 
     }
 
@@ -146,4 +148,15 @@ public class GraphScope extends Scope {
         return this.parent;
     }
 
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public HashMap<String, Node> getScopeNodes() {
+        return scopeNodes;
+    }
+
+    public HashMap<String, Edge> getScopeEdges() {
+        return scopeEdges;
+    }
 }

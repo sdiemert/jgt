@@ -19,6 +19,11 @@ public class NewGraphCommand extends Command {
     }
 
     public Scope apply(GlobalScope s) throws ScopeException{
+
+        for(String k : s.getGraphs().keySet()){
+            if(k.equals(sym)) throw new ScopeException("A graph with identifier '"+sym+"' already exists.");
+        }
+
         return new GraphScope(s, getSym());
     }
 

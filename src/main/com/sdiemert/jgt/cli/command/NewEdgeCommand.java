@@ -1,6 +1,7 @@
 package com.sdiemert.jgt.cli.command;
 
 import com.sdiemert.jgt.cli.scope.GraphScope;
+import com.sdiemert.jgt.cli.scope.RuleScope;
 import com.sdiemert.jgt.cli.scope.Scope;
 import com.sdiemert.jgt.cli.scope.ScopeException;
 import com.sdiemert.jgt.core.GraphException;
@@ -23,7 +24,16 @@ public class NewEdgeCommand extends Command {
             throw new ScopeException("Cannot create a '"+this.adj+"' edge in a graph (only allowed in rules)");
         }
 
+        for(String k : s.getScopeEdges().keySet()){
+            if(k.equals(sym)) throw new ScopeException("An edge already exists with identifier '"+sym+"'");
+        }
+
         s.addEdge(this.sym, this.src, this.tar, this.label);
+        return s;
+    }
+
+    public Scope apply(RuleScope s) throws ScopeException, GraphException{
+        s.addEdge(sym, src, tar, label, adj);
         return s;
     }
 

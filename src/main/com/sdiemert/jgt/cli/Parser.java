@@ -7,22 +7,26 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
-    // g : new graph
-    // n : new node "A" 1?
-    // n : new add node "A" 1?
-    // n : new del node "A" 1?
-    // e : new edge n1 n2 "A"
-    // e : new add edge n1 n2 "A"
-    // e : new del edge n1 n2 "A"
-    // s : new system
-    // r : new rule
+    // g : new graph (done)
+    // n : new node "A" 1? (done)
+    // n : new add node "A" 1? (done)
+    // n : new del node "A" 1? (done)
+    // e : new edge n1 n2 "A" (done)
+    // e : new add edge n1 n2 "A" (done)
+    // e : new del edge n1 n2 "A" (done)
+    // s : new system (done)
+    // r : new rule (done)
     // c : new cond
     //
     // rm x - removes x from the current scope
     //
-    // show  - shows the items currently in the scope
-    // back  - backs up a scope level
-    // pick x - enters a scope identified by x, must be graph, rule, or system.
+    // show  - shows the items currently in the scope (done)
+    // show x - shows x from the current scope.
+    // back  - backs up a scope level (done)
+    // pick x - enters a scope identified by x, must be graph, rule, or system. (done)
+    //
+    // apply <system id> <graph id> - works in global scope, picks a rule in the system to apply, displays resulting graph.
+    // apply <system id>.<rule id> <graph id> - applies specified rule to graph, displays resulting graph.
     //
     // x : load <path> - loads a file at the designated path, saves it locally with id x.
     // write x <path> - writes item identified by x to path
@@ -35,7 +39,8 @@ public class Parser {
 
     Matcher newMatcher = Pattern.compile(
                     "(("+Constants.ADJ_ADD+"|"+Constants.ADJ_DEL+")\\s+)?" +
-                    "("+Constants.NOUN_GRAPH+"|"+Constants.NOUN_NODE+"|"+Constants.NOUN_EDGE+")"+
+                    "("+Constants.NOUN_GRAPH+"|"+Constants.NOUN_NODE+"|"+
+                            Constants.NOUN_EDGE+"|"+Constants.NOUN_SYS+"|"+Constants.NOUN_RULE+")"+
                     "(\\s+(.*))?"
         ).matcher("");
 
@@ -121,6 +126,15 @@ public class Parser {
             }else if(noun.equals(Constants.NOUN_GRAPH)){
 
                 return (new NewGraphCommand(sym));
+
+            }else if(noun.equals(Constants.NOUN_RULE)){
+
+                return (new NewRuleCommand(sym));
+
+            }else if(noun.equals(Constants.NOUN_SYS)){
+
+                return (new NewSystemCommand(sym));
+
 
             }else if(noun.equals(Constants.NOUN_EDGE)){
 

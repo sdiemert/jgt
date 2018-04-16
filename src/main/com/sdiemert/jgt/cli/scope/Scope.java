@@ -2,6 +2,7 @@ package com.sdiemert.jgt.cli.scope;
 
 import com.sdiemert.jgt.core.GTSystem;
 import com.sdiemert.jgt.core.Graph;
+import com.sdiemert.jgt.core.GraphException;
 import com.sdiemert.jgt.core.Rule;
 
 public abstract class Scope {
@@ -10,7 +11,7 @@ public abstract class Scope {
 
     public abstract String show();
 
-    public Scope exit() throws ScopeException{
+    public Scope exit() throws ScopeException, GraphException {
         return this;
     }
 

@@ -1,9 +1,6 @@
 package com.sdiemert.jgt.cli.command;
 
-import com.sdiemert.jgt.cli.scope.GlobalScope;
-import com.sdiemert.jgt.cli.scope.GraphScope;
-import com.sdiemert.jgt.cli.scope.Scope;
-import com.sdiemert.jgt.cli.scope.ScopeException;
+import com.sdiemert.jgt.cli.scope.*;
 
 import java.io.PrintStream;
 
@@ -23,6 +20,16 @@ public class ShowCommand extends Command {
     }
 
     public Scope apply(GlobalScope s) throws ScopeException{
+        this.outputStream.println(s.show());
+        return s;
+    }
+
+    public Scope apply(SystemScope s) throws ScopeException{
+        this.outputStream.println(s.show());
+        return s;
+    }
+
+    public Scope apply(RuleScope s) throws ScopeException{
         this.outputStream.println(s.show());
         return s;
     }

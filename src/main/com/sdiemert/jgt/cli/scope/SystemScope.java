@@ -28,12 +28,42 @@ public class SystemScope extends Scope {
         return sym;
     }
 
+    public void add(String sym, Rule r) throws ScopeException{
+
+        for(Rule x : this.sys.getRules()){
+            if(x.getId().equals(r.getId())){
+                throw new ScopeException("A rule already exists in this system with identifier '"+sym+"'");
+            }
+        }
+
+        this.sys.addRule(r);
+    }
+
     public String show(){
-        return "";
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Rules:");
+
+        if(this.getRules().size() == 0){
+            sb.append(" None.\n");
+        }else{
+            sb.append("\n");
+            for(Rule r : this.getRules()){
+                sb.append(r.getId());
+                sb.append(" : Rule\n");
+            }
+        }
+
+        return sb.toString();
     }
 
     public ArrayList<Rule> getRules(){
         return this.sys.getRules();
+    }
+
+    public Scope exit() throws ScopeException {
+        this.parent.add(this.sym, this.sys);
+        return this.parent;
     }
 
 }
