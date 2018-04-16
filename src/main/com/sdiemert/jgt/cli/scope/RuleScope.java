@@ -1,5 +1,6 @@
 package com.sdiemert.jgt.cli.scope;
 
+import com.sdiemert.jgt.cli.ParserException;
 import com.sdiemert.jgt.core.*;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class RuleScope extends Scope {
 
         sb.append("add nodes: ");
         if(this.addNodes.size() == 0){
-            sb.append("0\n");
+            sb.append("None.\n");
         }else{
             sb.append("\n");
             for(Node k : this.addNodes){
@@ -80,7 +81,7 @@ public class RuleScope extends Scope {
 
         sb.append("add edges: ");
         if(this.addEdges.size() == 0){
-            sb.append("0\n");
+            sb.append("None.\n");
         }else{
             for(Edge k : this.addEdges){
                 sb.append(k.getId());
@@ -91,7 +92,7 @@ public class RuleScope extends Scope {
 
         sb.append("del nodes: ");
         if(this.delNodes.size() == 0){
-            sb.append("0\n");
+            sb.append("None.\n");
         }else{
             for(Node k : this.delNodes){
                 sb.append(k.getId());
@@ -102,7 +103,7 @@ public class RuleScope extends Scope {
 
         sb.append("del edges: ");
         if(this.delEdges.size() == 0){
-            sb.append("0\n");
+            sb.append("None.\n");
         }else{
             for(Edge k : this.delEdges){
                 sb.append(k.getId());
@@ -145,5 +146,37 @@ public class RuleScope extends Scope {
             }
         }
         return e;
+    }
+
+    public void delete(String k) throws ScopeException{
+
+        graphScope.delete(k);
+
+        for(int i = 0; i < addNodes.size(); i++){
+            if(addNodes.get(i).getId().equals(k)){
+                addNodes.remove(i);
+                break;
+            }
+        }
+
+        for(int i = addEdges.size()-1; i >= 0; i--){
+            if(addEdges.get(i).getId().equals(k) || !graphScope.scopeEdges.containsKey(addEdges.get(i).getId())){
+                addEdges.remove(i);
+            }
+        }
+
+        for(int i = 0; i < delNodes.size(); i++){
+            if(delNodes.get(i).getId().equals(k)){
+                delNodes.remove(i);
+                break;
+            }
+        }
+
+        for(int i = delEdges.size()-1; i >= 0; i--){
+            if(delEdges.get(i).getId().equals(k) || !graphScope.scopeEdges.containsKey(addEdges.get(i).getId())){
+                delEdges.remove(i);
+            }
+        }
+
     }
 }

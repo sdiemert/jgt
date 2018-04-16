@@ -18,10 +18,10 @@ public class Parser {
     // r : new rule (done)
     // c : new cond
     //
-    // rm x - removes x from the current scope
+    // rm x - removes x from the current scope (done)
     //
     // show  - shows the items currently in the scope (done)
-    // show x - shows x from the current scope.
+    // show x - shows x from the current scope. (done)
     // back  - backs up a scope level (done)
     // pick x - enters a scope identified by x, must be graph, rule, or system. (done)
     //
@@ -34,7 +34,12 @@ public class Parser {
     Matcher assignmentMatcher = Pattern.compile("\\s*("+Constants.ID+")\\s*:\\s*(.*)").matcher("");
 
     Matcher verbMatcher = Pattern.compile(
-            "("+Constants.VERB_NEW+"|"+Constants.VERB_SHOW+"|"+Constants.VERB_BACK+"|"+Constants.VERB_PICK+")(\\s+(.*))?"
+            "("+Constants.VERB_NEW+
+                    "|"+Constants.VERB_SHOW+
+                    "|"+Constants.VERB_BACK+
+                    "|"+Constants.VERB_PICK+
+                    "|"+Constants.VERB_DEL+
+                    ")(\\s+(.*))?"
     ).matcher("");
 
     Matcher newMatcher = Pattern.compile(
@@ -78,7 +83,7 @@ public class Parser {
         }
 
 
-        // 3) offload details of command parsing to other methods.
+        // 3) based on the verb, take different actions.
 
         if(verb.equals(Constants.VERB_NEW)) {
             return parseNewCommand(sym, rest);
@@ -88,6 +93,12 @@ public class Parser {
             return new BackCommand();
         }else if(verb.equals(Constants.VERB_PICK)){
             return new SelectCommand(rest);
+        }else if(verb.equals(Constants.VERB_DEL)){
+            if(rest.matches(Constants.ID)) {
+                return new DeleteCommand(rest);
+            }else{
+                throw new ParserException("Expected identifier after "+Constants.VERB_DEL);
+            }
         }else{
             throw new ParserException("Failed to parse: "+in);
         }

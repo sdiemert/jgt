@@ -38,6 +38,13 @@ public class GraphScope extends Scope {
         }
     }
 
+    private void defineScopeEdges(){
+        scopeEdges = new HashMap<String, Edge>();
+        for(Edge e : graph.getEdges()){
+            scopeEdges.put(e.getId(), e);
+        }
+    }
+
     public String scopeAsString(){
         return sym;
     }
@@ -145,6 +152,19 @@ public class GraphScope extends Scope {
             }
         }
         return null;
+    }
+
+    public void delete(String k) throws ScopeException{
+        if(scopeNodes.containsKey(k)){
+            graph.deleteNode(k);
+            defineScopeEdges(); // removing a node may have resulted in other edge removals...must recalculate.
+            scopeNodes.remove(k);
+        }else if (scopeEdges.containsKey(k)){
+            graph.deleteEdge(k);
+            scopeEdges.remove(k);
+        }else{
+            throw new ScopeException("No Node or Edge with identifier '"+k+"'");
+        }
     }
 
     public Scope exit() throws ScopeException{

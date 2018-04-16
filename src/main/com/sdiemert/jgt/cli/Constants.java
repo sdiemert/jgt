@@ -6,7 +6,7 @@ public class Constants {
     public final static String VERB_LOAD = "load";
     public final static String VERB_SHOW = "show";
     public final static String VERB_EXIT = "exit";
-    public final static String VERB_DEL = "delete";
+    public final static String VERB_DEL = "rm";
     public final static String VERB_ADD = "add";
     public final static String VERB_BACK = "back";
     public final static String VERB_PICK = "pick";

@@ -27,4 +27,8 @@ public abstract class Scope {
         throw new ScopeException("Cannot add Rule to this scope.");
     }
 
+    public void delete(String k) throws ScopeException{
+        throw new ScopeException("Cannot execute delete in this scope.");
+    }
+
 }

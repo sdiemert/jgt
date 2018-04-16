@@ -78,4 +78,10 @@ public class SystemScope extends Scope {
         return this.parent;
     }
 
+    public void delete(String k) throws ScopeException{
+        if(!sys.deleteRule(k)){
+            throw new ScopeException("Could not delete rule with identifier '"+k+"'");
+        }
+    }
+
 }

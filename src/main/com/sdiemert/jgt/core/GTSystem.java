@@ -103,7 +103,15 @@ public class GTSystem {
         return map;
     }
 
-
+    public boolean deleteRule(String id){
+        for(int i = 0; i < rules.size(); i++){
+            if(rules.get(i).getId().equals(id)){
+                rules.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public ArrayList<Rule> getRules(){
         return this.rules;

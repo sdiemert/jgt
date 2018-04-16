@@ -134,7 +134,7 @@ public class Graph {
      * @param i index of the node to delete in the node list.
      * @return true if deleted, false otherwise (unchanged).
      */
-    protected boolean deleteNode(int i){
+    public boolean deleteNode(int i){
         if(i >= 0 && i < this.nodes.size()){
             return this.deleteNode(this.nodes.get(i));
         }else{
@@ -149,7 +149,7 @@ public class Graph {
      * @param id uuid of the node to delete.
      * @return true if deleted, false otherwise (unchanged).
      */
-    protected boolean deleteNode(String id){
+    public boolean deleteNode(String id){
         for(Node n : this.nodes){
             if(n.getId().equals(id)){
                 return this.deleteNode(n);

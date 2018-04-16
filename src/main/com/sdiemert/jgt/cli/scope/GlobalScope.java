@@ -84,4 +84,14 @@ public class GlobalScope extends Scope {
         return this.systems;
     }
 
+    public void delete(String k) throws ScopeException{
+        if(graphs.containsKey(k)){
+            graphs.remove(k);
+        }else if(systems.containsKey(k)){
+            systems.remove(k);
+        }else{
+            throw new ScopeException("Cannot find element identified by '"+k+"' to delete.");
+        }
+    }
+
 }
