@@ -28,31 +28,40 @@ public class Parser {
     // apply <system id> <graph id> - works in global scope, picks a rule in the system to apply, displays resulting graph.
     // apply <system id>.<rule id> <graph id> - applies specified rule to graph, displays resulting graph.
     //
-    // x : load <path> - loads a file at the designated path, saves it locally with id x.
+    // load <path> - loads a file at the designated path, loads all elements in the file.
     // write x <path> - writes item identified by x to path
 
-    Matcher assignmentMatcher = Pattern.compile("\\s*("+Constants.ID+")\\s*:\\s*(.*)").matcher("");
+    private Matcher assignmentMatcher = Pattern.compile(
+            "\\s*("+Constants.ID+")\\s*:\\s*(.*)"
+        ).matcher("");
 
-    Matcher verbMatcher = Pattern.compile(
+    private Matcher verbMatcher = Pattern.compile(
             "("+Constants.VERB_NEW+
                     "|"+Constants.VERB_SHOW+
                     "|"+Constants.VERB_BACK+
                     "|"+Constants.VERB_PICK+
                     "|"+Constants.VERB_DEL+
+                    "|"+Constants.VERB_APPLY+
                     ")(\\s+(.*))?"
-    ).matcher("");
+        ).matcher("");
 
-    Matcher newMatcher = Pattern.compile(
+    private Matcher newMatcher = Pattern.compile(
                     "(("+Constants.ADJ_ADD+"|"+Constants.ADJ_DEL+")\\s+)?" +
                     "("+Constants.NOUN_GRAPH+"|"+Constants.NOUN_NODE+"|"+
                             Constants.NOUN_EDGE+"|"+Constants.NOUN_SYS+"|"+Constants.NOUN_RULE+")"+
                     "(\\s+(.*))?"
         ).matcher("");
 
-    Matcher newNodeArgMatcher = Pattern.compile("(\"[A-Za-z0-9]+\")(\\s+(\"[A-Za-z0-9]+\"|[0-9]+))?").matcher("");
+    private Matcher newNodeArgMatcher = Pattern.compile(
+            "(\"[A-Za-z0-9]+\")(\\s+(\"[A-Za-z0-9]+\"|[0-9]+))?"
+        ).matcher("");
 
-    Matcher newEdgeArgMatcher = Pattern.compile(
+    private  Matcher newEdgeArgMatcher = Pattern.compile(
             "("+Constants.ID+")\\s+("+Constants.ID+")\\s+(\"[A-Za-z0-9]+\")"
+        ).matcher("");
+
+    private Matcher applyMatcher = Pattern.compile(
+            "((("+Constants.ID+")\\s+("+Constants.ID+"))|(("+Constants.ID+")\\.("+Constants.ID+")\\s+("+Constants.ID+")))"
         ).matcher("");
 
     public Command command(String in) throws ParserException{
@@ -99,9 +108,46 @@ public class Parser {
             }else{
                 throw new ParserException("Expected identifier after "+Constants.VERB_DEL);
             }
+        }else if(verb.equals(Constants.VERB_APPLY)){
+            return parseAppyCommand(rest);
         }else{
             throw new ParserException("Failed to parse: "+in);
         }
+
+    }
+
+    Command parseAppyCommand(String in) throws ParserException{
+
+        String sys, rule, graph;
+
+        applyMatcher.reset(in);
+
+        if(applyMatcher.find()) {
+
+
+            // system type match.
+            if (applyMatcher.group(2) != null) {
+
+                sys = applyMatcher.group(3);
+                rule = null;
+                graph = applyMatcher.group(4);
+
+            } else if (applyMatcher.group(5) != null) {
+
+                sys = applyMatcher.group(6);
+                rule = applyMatcher.group(7);
+                graph = applyMatcher.group(8);
+
+            } else {
+
+                throw new ParserException("Invalid apply command '" + in + "'");
+            }
+
+        }else{
+            throw new ParserException("Invalid apply command '"+in+"'");
+        }
+
+        return new ApplyCommand(sys, rule, graph);
 
     }
 

@@ -38,7 +38,7 @@ public abstract class Command {
         throw new ScopeException("Cannot apply this command to current scope.");
     }
 
-    public Scope apply(GlobalScope s) throws ScopeException{
+    public Scope apply(GlobalScope s) throws ScopeException, GraphException{
         throw new ScopeException("Cannot apply this command to current scope.");
     }
 

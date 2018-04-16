@@ -57,6 +57,15 @@ public class GTSystem {
         }
     }
 
+    public Rule getRule(String id){
+        for(Rule r : this.rules){
+            if(r.getId().equals(id)){
+                return r;
+            }
+        }
+        return null;
+    }
+
     /**
      * Attempts to apply a Rule (non-deterministically chosen) from the list of Rules.
      *
