@@ -18,6 +18,8 @@ public class Parser {
     // r : new rule (done)
     // c : new cond
     //
+    // s : merge system1 system2 - merges two systems together to make a new system.
+    //
     // rm x - removes x from the current scope (done)
     //
     // show  - shows the items currently in the scope (done)
