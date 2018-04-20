@@ -3,7 +3,9 @@ package com.sdiemert.jgt.cli.command;
 import com.sdiemert.jgt.cli.scope.*;
 import com.sdiemert.jgt.core.Graph;
 import com.sdiemert.jgt.core.GraphException;
+import com.sdiemert.jgt.core.RuleException;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 public abstract class Command {
@@ -22,7 +24,7 @@ public abstract class Command {
         return false;
     }
 
-    public Scope apply(Scope s) throws ScopeException, GraphException {
+    public Scope apply(Scope s) throws ScopeException, GraphException, RuleException, IOException {
 
         if(s instanceof GraphScope) return apply((GraphScope) s);
         else if(s instanceof GlobalScope) return apply((GlobalScope) s);
@@ -38,7 +40,7 @@ public abstract class Command {
         throw new ScopeException("Cannot apply this command to current scope.");
     }
 
-    public Scope apply(GlobalScope s) throws ScopeException, GraphException{
+    public Scope apply(GlobalScope s) throws ScopeException, GraphException, IOException, RuleException {
         throw new ScopeException("Cannot apply this command to current scope.");
     }
 

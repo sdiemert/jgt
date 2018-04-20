@@ -3,7 +3,9 @@ package com.sdiemert.jgt.cli;
 import com.sdiemert.jgt.cli.command.Command;
 import com.sdiemert.jgt.cli.scope.ScopeException;
 import com.sdiemert.jgt.core.GraphException;
+import com.sdiemert.jgt.core.RuleException;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -45,6 +47,10 @@ public class CommandLineInterface {
             }catch(ScopeException e){
                 printScopeError(out, e.getMessage());
             }catch(GraphException e){
+                printError(out, e.getMessage());
+            }catch(RuleException e){
+                printError(out, e.getMessage());
+            }catch(IOException e){
                 printError(out, e.getMessage());
             }
 

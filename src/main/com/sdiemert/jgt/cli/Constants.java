@@ -4,6 +4,7 @@ public class Constants {
 
     public final static String VERB_NEW = "new";
     public final static String VERB_LOAD = "load";
+    public final static String VERB_WRITE = "write";
     public final static String VERB_SHOW = "show";
     public final static String VERB_EXIT = "exit";
     public final static String VERB_DEL = "rm";
@@ -26,6 +27,7 @@ public class Constants {
     public final static String VERB_OPTS = VERB_NEW+"|"+VERB_LOAD+"|"+VERB_SHOW+"|"+VERB_DEL;
 
     public final static String ID = "[A-Za-z][A-Za-z0-9]*";
+    public final static String FILE_PATH = ".*";
 
     public final static String NOT_REC = "Opps...Sorry, I don't recognize";
 }

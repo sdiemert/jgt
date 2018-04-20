@@ -70,7 +70,6 @@ public class RuleScope extends Scope {
         if(this.addNodes.size() == 0){
             sb.append("None.\n");
         }else{
-            sb.append("\n");
             for(Node k : this.addNodes){
                 sb.append("\t");
                 sb.append(k.getId());

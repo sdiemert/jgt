@@ -30,9 +30,10 @@ public class SystemScope extends Scope {
 
     public void add(String sym, Rule r) throws ScopeException{
 
-        for(Rule x : this.sys.getRules()){
-            if(x.getId().equals(r.getId())){
-                throw new ScopeException("A rule already exists in this system with identifier '"+sym+"'");
+        for(int i = 0; i < sys.getRules().size(); i++){
+            if(sys.getRules().get(i).getId().equals(r.getId())){
+                sys.getRules().set(i, r);
+                return;
             }
         }
 

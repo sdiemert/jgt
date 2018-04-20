@@ -28,7 +28,7 @@ public class Parser {
     // apply <system id> <graph id> - works in global scope, picks a rule in the system to apply, displays resulting graph. (done)
     // apply <system id>.<rule id> <graph id> - applies specified rule to graph, displays resulting graph. (done)
     //
-    // load <path> - loads a file at the designated path, loads all elements in the file.
+    // load graph|system <path> - loads a file at the designated path, loads all elements in the file.
     // write x <path> - writes item identified by x to path
 
     private Matcher assignmentMatcher = Pattern.compile(
@@ -42,6 +42,8 @@ public class Parser {
                     "|"+Constants.VERB_PICK+
                     "|"+Constants.VERB_DEL+
                     "|"+Constants.VERB_APPLY+
+                    "|"+Constants.VERB_LOAD+
+                    "|"+Constants.VERB_WRITE+
                     ")(\\s+(.*))?"
         ).matcher("");
 
@@ -63,6 +65,10 @@ public class Parser {
     private Matcher applyMatcher = Pattern.compile(
             "((("+Constants.ID+")\\s+("+Constants.ID+"))|(("+Constants.ID+")\\.("+Constants.ID+")\\s+("+Constants.ID+")))"
         ).matcher("");
+
+    private Matcher loadMatcher = Pattern.compile(
+            "(graph|system)\\s+("+Constants.FILE_PATH+")"
+    ).matcher("");
 
     public Command command(String in) throws ParserException{
 
@@ -110,8 +116,29 @@ public class Parser {
             }
         }else if(verb.equals(Constants.VERB_APPLY)){
             return parseAppyCommand(rest);
+        }else if(verb.equals(Constants.VERB_LOAD)){
+            return parseLoadCommand(rest);
         }else{
             throw new ParserException("Failed to parse: "+in);
+        }
+
+    }
+
+    Command parseLoadCommand(String in) throws ParserException{
+
+        String path, type;
+
+        loadMatcher.reset(in);
+
+        if(loadMatcher.find()){
+
+            type = loadMatcher.group(1);
+            path = loadMatcher.group(2);
+
+            return new LoadCommand(path, type);
+
+        }else{
+            throw new ParserException("Invalid load command '"+in+"'");
         }
 
     }
