@@ -28,49 +28,53 @@ public class Parser {
     // apply <system id> <graph id> - works in global scope, picks a rule in the system to apply, displays resulting graph. (done)
     // apply <system id>.<rule id> <graph id> - applies specified rule to graph, displays resulting graph. (done)
     //
-    // load graph|system <path> - loads a file at the designated path, loads all elements in the file.
-    // write x <path> - writes item identified by x to path
+    // load graph|system <path> - loads a file at the designated path, loads all elements in the file. (done)
+    // write x <path> - writes item identified by x to path (done)
 
     private Matcher assignmentMatcher = Pattern.compile(
-            "\\s*("+Constants.ID+")\\s*:\\s*(.*)"
-        ).matcher("");
+            "\\s*(" + Constants.ID + ")\\s*:\\s*(.*)"
+    ).matcher("");
 
     private Matcher verbMatcher = Pattern.compile(
-            "("+Constants.VERB_NEW+
-                    "|"+Constants.VERB_SHOW+
-                    "|"+Constants.VERB_BACK+
-                    "|"+Constants.VERB_PICK+
-                    "|"+Constants.VERB_DEL+
-                    "|"+Constants.VERB_APPLY+
-                    "|"+Constants.VERB_LOAD+
-                    "|"+Constants.VERB_WRITE+
+            "(" + Constants.VERB_NEW +
+                    "|" + Constants.VERB_SHOW +
+                    "|" + Constants.VERB_BACK +
+                    "|" + Constants.VERB_PICK +
+                    "|" + Constants.VERB_DEL +
+                    "|" + Constants.VERB_APPLY +
+                    "|" + Constants.VERB_LOAD +
+                    "|" + Constants.VERB_WRITE +
                     ")(\\s+(.*))?"
-        ).matcher("");
+    ).matcher("");
 
     private Matcher newMatcher = Pattern.compile(
-                    "(("+Constants.ADJ_ADD+"|"+Constants.ADJ_DEL+")\\s+)?" +
-                    "("+Constants.NOUN_GRAPH+"|"+Constants.NOUN_NODE+"|"+
-                            Constants.NOUN_EDGE+"|"+Constants.NOUN_SYS+"|"+Constants.NOUN_RULE+")"+
+            "((" + Constants.ADJ_ADD + "|" + Constants.ADJ_DEL + ")\\s+)?" +
+                    "(" + Constants.NOUN_GRAPH + "|" + Constants.NOUN_NODE + "|" +
+                    Constants.NOUN_EDGE + "|" + Constants.NOUN_SYS + "|" + Constants.NOUN_RULE + ")" +
                     "(\\s+(.*))?"
-        ).matcher("");
+    ).matcher("");
 
     private Matcher newNodeArgMatcher = Pattern.compile(
             "(\"[A-Za-z0-9]+\")(\\s+(\"[A-Za-z0-9]+\"|[0-9]+))?"
-        ).matcher("");
-
-    private  Matcher newEdgeArgMatcher = Pattern.compile(
-            "("+Constants.ID+")\\s+("+Constants.ID+")\\s+(\"[A-Za-z0-9]+\")"
-        ).matcher("");
-
-    private Matcher applyMatcher = Pattern.compile(
-            "((("+Constants.ID+")\\s+("+Constants.ID+"))|(("+Constants.ID+")\\.("+Constants.ID+")\\s+("+Constants.ID+")))"
-        ).matcher("");
-
-    private Matcher loadMatcher = Pattern.compile(
-            "(graph|system)\\s+("+Constants.FILE_PATH+")"
     ).matcher("");
 
-    public Command command(String in) throws ParserException{
+    private Matcher newEdgeArgMatcher = Pattern.compile(
+            "(" + Constants.ID + ")\\s+(" + Constants.ID + ")\\s+(\"[A-Za-z0-9]+\")"
+    ).matcher("");
+
+    private Matcher applyMatcher = Pattern.compile(
+            "(((" + Constants.ID + ")\\s+(" + Constants.ID + "))|((" + Constants.ID + ")\\.(" + Constants.ID + ")\\s+(" + Constants.ID + ")))"
+    ).matcher("");
+
+    private Matcher loadMatcher = Pattern.compile(
+            "(graph|system)\\s+(" + Constants.FILE_PATH + ")"
+    ).matcher("");
+
+    private Matcher writeMatcher = Pattern.compile(
+            "(" + Constants.ID + ")\\s+(" + Constants.FILE_PATH + ")"
+    ).matcher("");
+
+    public Command command(String in) throws ParserException {
 
         String sym = null;
         String rest = null;
@@ -79,10 +83,10 @@ public class Parser {
         // 1) identify a symbol to assign (possibly none).
         assignmentMatcher.reset(in);
 
-        if(assignmentMatcher.find()){
+        if (assignmentMatcher.find()) {
             sym = assignmentMatcher.group(1);
             rest = assignmentMatcher.group(2);
-        }else{
+        } else {
             sym = null;
             rest = in;
         }
@@ -90,66 +94,83 @@ public class Parser {
         // 2) identify a verb.
         verbMatcher.reset(rest);
 
-        if(verbMatcher.find()){
+        if (verbMatcher.find()) {
             verb = verbMatcher.group(1);
             rest = verbMatcher.group(3);
-        }else{
-            throw new ParserException("Failed to parse: "+in);
+        } else {
+            throw new ParserException("Failed to parse: " + in);
         }
 
 
         // 3) based on the verb, take different actions.
 
-        if(verb.equals(Constants.VERB_NEW)) {
+        if (verb.equals(Constants.VERB_NEW)) {
             return parseNewCommand(sym, rest);
-        }else if(verb.equals(Constants.VERB_SHOW)) {
+        } else if (verb.equals(Constants.VERB_SHOW)) {
             return new ShowCommand(rest);
-        }else if(verb.equals(Constants.VERB_BACK)){
+        } else if (verb.equals(Constants.VERB_BACK)) {
             return new BackCommand();
-        }else if(verb.equals(Constants.VERB_PICK)){
+        } else if (verb.equals(Constants.VERB_PICK)) {
             return new SelectCommand(rest);
-        }else if(verb.equals(Constants.VERB_DEL)){
-            if(rest.matches(Constants.ID)) {
+        } else if (verb.equals(Constants.VERB_DEL)) {
+            if (rest.matches(Constants.ID)) {
                 return new DeleteCommand(rest);
-            }else{
-                throw new ParserException("Expected identifier after "+Constants.VERB_DEL);
+            } else {
+                throw new ParserException("Expected identifier after " + Constants.VERB_DEL);
             }
-        }else if(verb.equals(Constants.VERB_APPLY)){
+        } else if (verb.equals(Constants.VERB_APPLY)) {
             return parseAppyCommand(rest);
-        }else if(verb.equals(Constants.VERB_LOAD)){
+        } else if (verb.equals(Constants.VERB_LOAD)) {
             return parseLoadCommand(rest);
-        }else{
-            throw new ParserException("Failed to parse: "+in);
+        } else if (verb.equals(Constants.VERB_WRITE)) {
+            return parseWriteCommand(rest);
+        } else {
+            throw new ParserException("Failed to parse: " + in);
         }
 
     }
 
-    Command parseLoadCommand(String in) throws ParserException{
+    Command parseLoadCommand(String in) throws ParserException {
 
         String path, type;
 
         loadMatcher.reset(in);
 
-        if(loadMatcher.find()){
-
+        if (loadMatcher.find()) {
             type = loadMatcher.group(1);
             path = loadMatcher.group(2);
-
             return new LoadCommand(path, type);
-
-        }else{
-            throw new ParserException("Invalid load command '"+in+"'");
+        } else {
+            throw new ParserException("Invalid arguments to load command '" + in + "'");
         }
 
     }
 
-    Command parseAppyCommand(String in) throws ParserException{
+
+    Command parseWriteCommand(String in) throws ParserException {
+
+        String path, id;
+
+        writeMatcher.reset(in);
+
+        if (writeMatcher.find()) {
+            id = writeMatcher.group(1);
+            path = writeMatcher.group(2);
+            return new WriteCommand(path, id);
+        } else {
+            throw new ParserException("Invalid arguments to write command '" + in + "'");
+        }
+
+    }
+
+
+    Command parseAppyCommand(String in) throws ParserException {
 
         String sys, rule, graph;
 
         applyMatcher.reset(in);
 
-        if(applyMatcher.find()) {
+        if (applyMatcher.find()) {
 
 
             // system type match.
@@ -170,15 +191,15 @@ public class Parser {
                 throw new ParserException("Invalid apply command '" + in + "'");
             }
 
-        }else{
-            throw new ParserException("Invalid apply command '"+in+"'");
+        } else {
+            throw new ParserException("Invalid apply command '" + in + "'");
         }
 
         return new ApplyCommand(sys, rule, graph);
 
     }
 
-    Command parseNewCommand(String sym, String in) throws ParserException{
+    Command parseNewCommand(String sym, String in) throws ParserException {
 
         // in has everything after the "new" keyword,
         // new graph
@@ -186,7 +207,7 @@ public class Parser {
         // new del node
         // new node
 
-        if(sym == null){
+        if (sym == null) {
             throw new ParserException("new command must have assignment");
         }
 
@@ -194,66 +215,66 @@ public class Parser {
 
         newMatcher.reset(in);
 
-        if(newMatcher.find()){
+        if (newMatcher.find()) {
 
             adj = newMatcher.group(2);
             noun = newMatcher.group(3);
             args = newMatcher.group(5);
 
-            if(noun.equals(Constants.NOUN_NODE)){
+            if (noun.equals(Constants.NOUN_NODE)) {
 
                 NewNodeCommand cmd = new NewNodeCommand(sym);
                 cmd.setAdj(adj);
                 parseNewNodeArguments(args, cmd);
                 return cmd;
 
-            }else if(noun.equals(Constants.NOUN_GRAPH)){
+            } else if (noun.equals(Constants.NOUN_GRAPH)) {
 
                 return (new NewGraphCommand(sym));
 
-            }else if(noun.equals(Constants.NOUN_RULE)){
+            } else if (noun.equals(Constants.NOUN_RULE)) {
 
                 return (new NewRuleCommand(sym));
 
-            }else if(noun.equals(Constants.NOUN_SYS)){
+            } else if (noun.equals(Constants.NOUN_SYS)) {
 
                 return (new NewSystemCommand(sym));
 
 
-            }else if(noun.equals(Constants.NOUN_EDGE)){
+            } else if (noun.equals(Constants.NOUN_EDGE)) {
 
                 NewEdgeCommand cmd = new NewEdgeCommand(sym);
                 cmd.setAdj(adj);
                 parseNewEdgeArguments(args, cmd);
                 return cmd;
 
-            }else{
-                throw new ParserException("Failed to parse: "+in);
+            } else {
+                throw new ParserException("Failed to parse: " + in);
             }
 
-        }else{
-            throw new ParserException("Failed to parse: "+in);
+        } else {
+            throw new ParserException("Failed to parse: " + in);
         }
     }
 
-    void parseNewNodeArguments(String in, NewNodeCommand cmd) throws ParserException{
+    void parseNewNodeArguments(String in, NewNodeCommand cmd) throws ParserException {
         newNodeArgMatcher.reset(in);
-        if(newNodeArgMatcher.find()){
+        if (newNodeArgMatcher.find()) {
             cmd.setLabel(newNodeArgMatcher.group(1));
             cmd.setData(newNodeArgMatcher.group(3));
-        }else{
-            throw new ParserException("Invalid arguments to new node: '"+in+"'");
+        } else {
+            throw new ParserException("Invalid arguments to new node: '" + in + "'");
         }
     }
 
-    void parseNewEdgeArguments(String in, NewEdgeCommand cmd) throws ParserException{
+    void parseNewEdgeArguments(String in, NewEdgeCommand cmd) throws ParserException {
         newEdgeArgMatcher.reset(in);
-        if(newEdgeArgMatcher.find()){
+        if (newEdgeArgMatcher.find()) {
             cmd.setSrc(newEdgeArgMatcher.group(1));
             cmd.setTar(newEdgeArgMatcher.group(2));
             cmd.setLabel(newEdgeArgMatcher.group(3));
-        }else{
-            throw new ParserException("Invalid arguments to new edge: '"+in+"'");
+        } else {
+            throw new ParserException("Invalid arguments to new edge: '" + in + "'");
         }
     }
 
