@@ -22,6 +22,15 @@ public class Graph {
         this.id = id;
     }
 
+    public Node getNode(String id){
+        for(Node n : this.nodes){
+            if(n.getId().equals(id)){
+                return n;
+            }
+        }
+        return null;
+    }
+
     /**
      * Adds a new node to the graph.
      *

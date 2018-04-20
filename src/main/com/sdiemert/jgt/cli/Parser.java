@@ -25,8 +25,8 @@ public class Parser {
     // back  - backs up a scope level (done)
     // pick x - enters a scope identified by x, must be graph, rule, or system. (done)
     //
-    // apply <system id> <graph id> - works in global scope, picks a rule in the system to apply, displays resulting graph.
-    // apply <system id>.<rule id> <graph id> - applies specified rule to graph, displays resulting graph.
+    // apply <system id> <graph id> - works in global scope, picks a rule in the system to apply, displays resulting graph. (done)
+    // apply <system id>.<rule id> <graph id> - applies specified rule to graph, displays resulting graph. (done)
     //
     // load <path> - loads a file at the designated path, loads all elements in the file.
     // write x <path> - writes item identified by x to path
