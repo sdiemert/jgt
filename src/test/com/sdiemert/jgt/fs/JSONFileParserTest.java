@@ -1,6 +1,7 @@
 package com.sdiemert.jgt.fs;
 
 import com.sdiemert.jgt.core.*;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -237,5 +238,183 @@ public class JSONFileParserTest {
         g.addNode(new Node("n1", "A"));
         g.addNode(new Node("n2", "A"));
         fp.loadEdge(jE, g);
+    }
+
+    @Test
+    public void loadRule() throws GraphException, RuleException, JSONException{
+
+        JSONObject jN1 = new JSONObject("{  \"id\" : \"n1\", \"label\" : \"A\"}");
+        JSONObject jN2 = new JSONObject("{  \"id\" : \"n2\", \"label\" : \"B\"}");
+        JSONObject jE = new JSONObject(
+                "{  \"id\" : \"e1\", \"src\" : \"n1\", \"tar\" : \"n2\", \"label\" : \"e\" }");
+
+        JSONArray nodeArray = new JSONArray(Arrays.asList(jN1, jN2));
+        JSONArray edgeArray = new JSONArray(Arrays.asList(jE));
+
+        JSONObject jG = new JSONObject();
+        jG.put("nodes", nodeArray);
+        jG.put("edges", edgeArray);
+        jG.put("id", "g1");
+
+        JSONObject jR = new JSONObject();
+        jR.put("id", "r1");
+        jR.put("graph", jG);
+        jR.put("addNodes", new JSONArray());
+        jR.put("addEdges", new JSONArray());
+        jR.put("delNodes", new JSONArray());
+        jR.put("delEdges", new JSONArray());
+
+        Rule r = fp.loadRule(jR);
+
+        assertNotNull(r);
+        assertEquals("r1", r.getId());
+        assertEquals(2, r.getRuleGraph().getNodes().size());
+        assertEquals(1, r.getRuleGraph().getEdges().size());
+    }
+
+    @Test
+    public void loadRuleWithAdds() throws GraphException, RuleException, JSONException{
+
+        JSONObject jN1 = new JSONObject("{  \"id\" : \"n1\", \"label\" : \"A\"}");
+        JSONObject jN2 = new JSONObject("{  \"id\" : \"n2\", \"label\" : \"B\"}");
+        JSONObject jE = new JSONObject(
+                "{  \"id\" : \"e1\", \"src\" : \"n1\", \"tar\" : \"n2\", \"label\" : \"e\" }");
+
+        JSONArray nodeArray = new JSONArray(Arrays.asList(jN1, jN2));
+        JSONArray edgeArray = new JSONArray(Arrays.asList(jE));
+
+        JSONObject jG = new JSONObject();
+        jG.put("nodes", nodeArray);
+        jG.put("edges", edgeArray);
+        jG.put("id", "g1");
+
+        JSONArray addNodes = new JSONArray(Arrays.asList("n1"));
+        JSONArray addEdges = new JSONArray(Arrays.asList("e1"));
+
+        JSONObject jR = new JSONObject();
+        jR.put("id", "r1");
+        jR.put("graph", jG);
+        jR.put("addNodes", addNodes);
+        jR.put("addEdges", addEdges);
+        jR.put("delNodes", new JSONArray());
+        jR.put("delEdges", new JSONArray());
+
+        Rule r = fp.loadRule(jR);
+
+        assertNotNull(r);
+        assertEquals(1, r.getAddEdges().size());
+        assertEquals(1, r.getAddNodes().size());
+
+    }
+
+    @Test
+    public void loadRuleWithDels() throws GraphException, RuleException, JSONException{
+
+        JSONObject jN1 = new JSONObject("{  \"id\" : \"n1\", \"label\" : \"A\"}");
+        JSONObject jN2 = new JSONObject("{  \"id\" : \"n2\", \"label\" : \"B\"}");
+        JSONObject jE = new JSONObject(
+                "{  \"id\" : \"e1\", \"src\" : \"n1\", \"tar\" : \"n2\", \"label\" : \"e\" }");
+
+        JSONArray nodeArray = new JSONArray(Arrays.asList(jN1, jN2));
+        JSONArray edgeArray = new JSONArray(Arrays.asList(jE));
+
+        JSONObject jG = new JSONObject();
+        jG.put("nodes", nodeArray);
+        jG.put("edges", edgeArray);
+        jG.put("id", "g1");
+
+        JSONArray addNodes = new JSONArray(Arrays.asList("n1"));
+        JSONArray addEdges = new JSONArray(Arrays.asList("e1"));
+
+        JSONObject jR = new JSONObject();
+        jR.put("id", "r1");
+        jR.put("graph", jG);
+        jR.put("delNodes", addNodes);
+        jR.put("delEdges", addEdges);
+        jR.put("addNodes", new JSONArray());
+        jR.put("addEdges", new JSONArray());
+
+        Rule r = fp.loadRule(jR);
+
+        assertNotNull(r);
+        assertEquals(1, r.getDelEdges().size());
+        assertEquals(1, r.getDelNodes().size());
+
+    }
+
+    @Test(expected = RuleException.class)
+    public void loadRuleInvalidDel() throws GraphException, RuleException, JSONException{
+
+        JSONObject jN1 = new JSONObject("{  \"id\" : \"n1\", \"label\" : \"A\"}");
+        JSONObject jN2 = new JSONObject("{  \"id\" : \"n2\", \"label\" : \"B\"}");
+        JSONObject jE = new JSONObject(
+                "{  \"id\" : \"e1\", \"src\" : \"n1\", \"tar\" : \"n2\", \"label\" : \"e\" }");
+
+        JSONArray nodeArray = new JSONArray(Arrays.asList(jN1, jN2));
+        JSONArray edgeArray = new JSONArray(Arrays.asList(jE));
+
+        JSONObject jG = new JSONObject();
+        jG.put("nodes", nodeArray);
+        jG.put("edges", edgeArray);
+        jG.put("id", "g1");
+
+        JSONArray addNodes = new JSONArray(Arrays.asList("NOT A NODE"));
+        JSONArray addEdges = new JSONArray(Arrays.asList("e1"));
+
+        JSONObject jR = new JSONObject();
+        jR.put("id", "r1");
+        jR.put("graph", jG);
+        jR.put("delNodes", addNodes);
+        jR.put("delEdges", addEdges);
+        jR.put("addNodes", new JSONArray());
+        jR.put("addEdges", new JSONArray());
+
+        fp.loadRule(jR);
+
+    }
+
+    @Test(expected = JSONException.class)
+    public void loadRuleNoId() throws GraphException, RuleException, JSONException{
+
+        JSONObject jN1 = new JSONObject("{  \"id\" : \"n1\", \"label\" : \"A\"}");
+        JSONObject jN2 = new JSONObject("{  \"id\" : \"n2\", \"label\" : \"B\"}");
+        JSONObject jE = new JSONObject(
+                "{  \"id\" : \"e1\", \"src\" : \"n1\", \"tar\" : \"n2\", \"label\" : \"e\" }");
+
+        JSONArray nodeArray = new JSONArray(Arrays.asList(jN1, jN2));
+        JSONArray edgeArray = new JSONArray(Arrays.asList(jE));
+
+        JSONObject jG = new JSONObject();
+        jG.put("nodes", nodeArray);
+        jG.put("edges", edgeArray);
+        jG.put("id", "g1");
+
+        JSONArray addNodes = new JSONArray(Arrays.asList("n1"));
+        JSONArray addEdges = new JSONArray(Arrays.asList("e1"));
+
+        JSONObject jR = new JSONObject();
+
+        jR.put("graph", jG);
+        jR.put("delNodes", addNodes);
+        jR.put("delEdges", addEdges);
+        jR.put("addNodes", new JSONArray());
+        jR.put("addEdges", new JSONArray());
+
+        fp.loadRule(jR);
+
+    }
+
+    @Test
+    public void loadSystem() throws IOException, GraphException, RuleException, JSONException {
+        GTSystem s = fp.loadSystem("test-fixtures/system.json");
+        assertNotNull(s);
+        assertEquals(1, s.getRules().size());
+        assertEquals("s1", s.getId());
+        assertEquals("r1", s.getRules().get(0).getId());
+    }
+
+    @Test(expected = IOException.class)
+    public void loadSystemInvalidFile() throws IOException, GraphException, RuleException, JSONException{
+        fp.loadSystem("NOT A VALID PATH");
     }
 }

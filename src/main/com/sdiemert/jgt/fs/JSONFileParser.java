@@ -4,19 +4,38 @@ import com.sdiemert.jgt.core.*;
 
 import org.json.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import org.apache.commons.io.FileUtils;
+public class JSONFileParser extends FileParser {
 
-public class JSONFileParser implements FileParser {
-
-    public Graph loadGraph(String filePath) throws IOException, GraphException{
+    /**
+     * Loads a Graph from a json file.
+     * @param filePath the path to the file.
+     *
+     * @return a Graph object corresponding to the contents of the file.
+     *
+     * @throws IOException if the file cannot be found/opened.
+     * @throws GraphException if the graph in the file is invalid.
+     * @throws JSONException if the JSON in the file is not valid or does not match the schema.
+     */
+    public Graph loadGraph(String filePath) throws IOException, GraphException, JSONException{
         return loadGraph(fromFile(filePath));
     }
 
-    Graph loadGraph(JSONObject obj) throws GraphException {
+    /**
+     * Loads a GTSystem from a json file at the designated path.
+     * @param filePath the path to the json file.
+     * @return a GTSystem
+     * @throws IOException if the file is not found/opened.
+     * @throws JSONException if the file contains invalid JSON or the JSON does not match the expected schema.
+     * @throws GraphException if a rule/condition graph in the file is invalid.
+     */
+    public GTSystem loadSystem(String filePath) throws IOException, JSONException, GraphException, RuleException {
+        return loadSystem(fromFile(filePath));
+    }
+
+    Graph loadGraph(JSONObject obj) throws GraphException, JSONException {
 
         // {
         //      id : "string",
@@ -83,15 +102,83 @@ public class JSONFileParser implements FileParser {
 
     }
 
-    public GTSystem loadSystem(String filePath) throws FileNotFoundException{
+    GTSystem loadSystem(JSONObject obj) throws GraphException, RuleException {
 
-        return null;
+        // { "id" : "xxx", "rules" : [ {...} ], "conditions" : [ {...} ] }
+
+        GTSystem gts = new GTSystem(obj.getString("id"));
+
+        for(Object r : obj.getJSONArray("rules")){
+            gts.addRule(loadRule((JSONObject) r));
+        }
+
+        return gts;
     }
 
-    protected JSONObject fromFile(String path) throws IOException {
-        File f = new File(path);
-        String c = FileUtils.readFileToString(f, "utf-8");
-        return new JSONObject(c);
+    Rule loadRule(JSONObject obj) throws JSONException, GraphException, RuleException{
+
+        // {
+        //   "id" : "xxx", "graph" : { ... },
+        //   "addNodes" : ["x",...],
+        //   "addEdges" : ["x",...],
+        //   "delNodes" : ["x",...],
+        //   "delEdges" : ["x",...]
+        // }
+
+        String id = obj.getString("id");
+        Graph ruleGraph = loadGraph(obj.getJSONObject("graph"));
+
+        Node tmpNode = null;
+        Edge tmpEdge = null;
+        String elemId = null;
+
+        ArrayList<Node> addNodes = new ArrayList<Node>();
+
+        for(Object o : obj.getJSONArray("addNodes")){
+            elemId = (String)o;
+            tmpNode = ruleGraph.getNode(elemId);
+            if(tmpNode != null){
+                addNodes.add(tmpNode);
+            }else{
+                throw new RuleException("all nodes in addNodes must be in rule Graph");
+            }
+        }
+
+        ArrayList<Node> delNodes = new ArrayList<Node>();
+        for(Object o : obj.getJSONArray("delNodes")){
+            elemId = (String)o;
+            tmpNode = ruleGraph.getNode(elemId);
+            if(tmpNode != null){
+                delNodes.add(tmpNode);
+            }else{
+                throw new RuleException("all nodes in delNodes must be in rule Graph");
+            }
+        }
+
+        ArrayList<Edge> addEdges = new ArrayList<Edge>();
+        for(Object o : obj.getJSONArray("addEdges")){
+            elemId = (String)o;
+            tmpEdge = ruleGraph.getEdge(elemId);
+            if(tmpEdge != null){
+                addEdges.add(tmpEdge);
+            }else{
+                throw new RuleException("all nodes in addEdges must be in rule Graph");
+            }
+        }
+
+        ArrayList<Edge> delEdges = new ArrayList<Edge>();
+        for(Object o : obj.getJSONArray("delEdges")){
+            elemId = (String)o;
+            tmpEdge = ruleGraph.getEdge(elemId);
+            if(tmpEdge != null){
+                delEdges.add(tmpEdge);
+            }else{
+                throw new RuleException("all nodes in delEdges must be in rule Graph");
+            }
+        }
+
+        return new Rule(id, ruleGraph, addNodes, addEdges, delNodes, delEdges);
+
     }
 
 }

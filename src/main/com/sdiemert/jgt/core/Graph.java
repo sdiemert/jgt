@@ -31,6 +31,15 @@ public class Graph {
         return null;
     }
 
+    public Edge getEdge(String id){
+        for(Edge e : this.edges){
+            if(e.getId().equals(id)){
+                return e;
+            }
+        }
+        return null;
+    }
+
     /**
      * Adds a new node to the graph.
      *
