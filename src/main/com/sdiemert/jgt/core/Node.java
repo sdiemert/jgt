@@ -27,9 +27,6 @@ public class Node<T extends NodeData> {
      */
     @Contract("null -> fail")
     public Node(String label){
-
-        assert(type != null);
-
         this.id = "node-"+UUID.randomUUID().toString();
         this.type = label;
         this.data = null;

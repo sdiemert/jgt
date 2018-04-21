@@ -19,8 +19,6 @@ public class GraphBuilder {
      */
     public Graph fromMatrix(boolean[][] M, int size) throws GraphException{
 
-        assert(M.length == size);
-
         Graph g = new Graph();
 
         for(int i = 0; i < size; i++){
