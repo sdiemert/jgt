@@ -17,10 +17,12 @@ public class CommandLineInterface {
     private Parser parser;
 
     public CommandLineInterface(){
-
         session = new Session();
         parser = new Parser();
+    }
 
+    public CommandLineInterface(Session s){
+        this.session = s;
     }
 
     public void run(Console console, PrintStream out){
