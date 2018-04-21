@@ -9,6 +9,7 @@
 + Read/Write graphs and systems to files.
 + Merge multiple systems together
 + Invoke various analysis (e.g., critical pairs, etc.)
++ Command memory. 
 
 ### UI
 
@@ -26,10 +27,33 @@ It seems a good approach might be to generate a library of classes or a jar. Thi
 
 A JAR here is ideal as it makes it difficult for the user to edit the rules and then loose backwards compatibility with the original specification.
 
+### Interfaces
+
++ Interfacing with Groove to facilitate model checking.
+    - Read Groove systems
+    - Write to Grove systems
+    - Call groove directly to do model checking?
+
 ### Analysis
 
 + Critical pair analysis
 
-It would be nice to have sort of termination analysis - but it is unclear what that would be? Need to do more reading. 
+It would be nice to have sort of termination analysis - but it is unclear what that would be? Need to do more reading.
 
+### Documentation
 
+- Writeup about GT basics (wiki?)
+- Tutorials
+- GIFs of CLI and UI together
+- Pick a reasonable license
+- Basic README
+- Write a paper
+
+### Devops
+
+- Maven integration (?)
+- Setup some sort of continuous integration (Travis CI?)
+
+### Tests
+
+- Performance Tests

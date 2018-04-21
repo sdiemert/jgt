@@ -5,6 +5,7 @@ import com.sdiemert.jgt.cli.scope.ScopeException;
 import com.sdiemert.jgt.core.GraphException;
 import com.sdiemert.jgt.core.RuleException;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -22,41 +23,55 @@ public class CommandLineInterface {
 
     }
 
-    public void run(InputStream in, PrintStream out){
-
-        Scanner inputScanner = new Scanner(in);
-
-        Command cmd = null;
-
+    public void run(Console console, PrintStream out){
         this.printWelcome(out);
-
         while(true){
             this.printPrompt(out);
-
-            try {
-                cmd = parser.command(inputScanner.nextLine());
-
-                cmd.setOutputStream(out);
-
-                if(cmd.isExit()) break;
-
-                session.execute(cmd);
-
-            }catch(ParserException e){
-                printParserError(out, e.getMessage());
-            }catch(ScopeException e){
-                printScopeError(out, e.getMessage());
-            }catch(GraphException e){
-                printError(out, e.getMessage());
-            }catch(RuleException e){
-                printError(out, e.getMessage());
-            }catch(IOException e){
-                printError(out, e.getMessage());
+            if(!this.repl(console.readLine(), out)){
+                break;
             }
+        }
+        printGoodbye(out);
+    }
 
+    public void run(InputStream in, PrintStream out){
+        Scanner inputScanner = new Scanner(in);
+        this.printWelcome(out);
+        while(true){
+            this.printPrompt(out);
+            if(!this.repl(inputScanner.nextLine(), out)){
+                break;
+            }
+        }
+        printGoodbye(out);
+    }
+
+    private boolean repl(String s, PrintStream out){
+
+        Command cmd;
+
+        try {
+            cmd = parser.command(s);
+
+            cmd.setOutputStream(out);
+
+            if(cmd.isExit()) return false;
+
+            session.execute(cmd);
+
+        }catch(ParserException e){
+            printParserError(out, e.getMessage());
+        }catch(ScopeException e){
+            printScopeError(out, e.getMessage());
+        }catch(GraphException e){
+            printError(out, e.getMessage());
+        }catch(RuleException e){
+            printError(out, e.getMessage());
+        }catch(IOException e){
+            printError(out, e.getMessage());
         }
 
-        printGoodbye(out);
+        return true;
     }
 
     private void printPrompt(PrintStream out) {
