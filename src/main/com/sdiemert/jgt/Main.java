@@ -5,6 +5,7 @@ import com.sdiemert.jgt.cli.CommandLineInterface;
 import com.sdiemert.jgt.cli.Session;
 import com.sdiemert.jgt.ui.Controller;
 import com.sdiemert.jgt.ui.MainFrame;
+import com.sdiemert.jgt.util.PrintStreamWrapper;
 
 import java.io.Console;
 
@@ -14,9 +15,9 @@ public class Main {
         CommandLineInterface cli = new CommandLineInterface();
         Console console = System.console();
         if(console != null) {
-            cli.run(console, System.out);
+            cli.run(console, new PrintStreamWrapper(System.out));
         }else{
-            cli.run(System.in, System.out);
+            cli.run(System.in, new PrintStreamWrapper(System.out));
         }
     }
 

@@ -4,19 +4,20 @@ import com.sdiemert.jgt.cli.scope.*;
 import com.sdiemert.jgt.core.Graph;
 import com.sdiemert.jgt.core.GraphException;
 import com.sdiemert.jgt.core.RuleException;
+import com.sdiemert.jgt.util.Printer;
 
 import java.io.IOException;
 import java.io.PrintStream;
 
 public abstract class Command {
 
-    PrintStream outputStream;
+    Printer outputStream;
 
     public Command(){
         this.outputStream = null;
     }
 
-    public Command(PrintStream out){
+    public Command(Printer out){
         this.outputStream = out;
     }
 
@@ -53,7 +54,7 @@ public abstract class Command {
     }
 
 
-    public void setOutputStream(PrintStream out){
+    public void setOutputStream(Printer out){
         this.outputStream = out;
     }
 }

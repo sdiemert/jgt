@@ -4,6 +4,7 @@ import com.sdiemert.jgt.cli.command.Command;
 import com.sdiemert.jgt.cli.scope.ScopeException;
 import com.sdiemert.jgt.core.GraphException;
 import com.sdiemert.jgt.core.RuleException;
+import com.sdiemert.jgt.util.Printer;
 
 import java.io.Console;
 import java.io.IOException;
@@ -23,9 +24,10 @@ public class CommandLineInterface {
 
     public CommandLineInterface(Session s){
         this.session = s;
+        this.parser = new Parser();
     }
 
-    public void run(Console console, PrintStream out){
+    public void run(Console console, Printer out){
         this.printWelcome(out);
         while(true){
             this.printPrompt(out);
@@ -36,7 +38,7 @@ public class CommandLineInterface {
         printGoodbye(out);
     }
 
-    public void run(InputStream in, PrintStream out){
+    public void run(InputStream in, Printer out){
         Scanner inputScanner = new Scanner(in);
         this.printWelcome(out);
         while(true){
@@ -48,7 +50,7 @@ public class CommandLineInterface {
         printGoodbye(out);
     }
 
-    private boolean repl(String s, PrintStream out){
+    public boolean repl(String s, Printer out){
 
         Command cmd;
 
@@ -76,27 +78,27 @@ public class CommandLineInterface {
         return true;
     }
 
-    private void printPrompt(PrintStream out) {
+    public void printPrompt(Printer out) {
         out.print(session.scopeAsString()+" >>> ");
     }
 
-    private void printWelcome(PrintStream out) {
+    private void printWelcome(Printer out) {
         out.println("Hello! Welcome to the jGT command line interface.\n");
     }
 
-    private void printGoodbye(PrintStream out) {
+    private void printGoodbye(Printer out) {
         out.println("Exiting...Goodbye\n");
     }
 
-    private void printParserError(PrintStream out, String err){
+    private void printParserError(Printer out, String err){
         out.println(err);
     }
 
-    private void printScopeError(PrintStream out, String err){
+    private void printScopeError(Printer out, String err){
         out.println(err);
     }
 
-    private void printError(PrintStream out, String err){
+    private void printError(Printer out, String err){
         out.println(err);
     }
 

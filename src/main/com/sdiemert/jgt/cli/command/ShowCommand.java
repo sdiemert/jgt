@@ -1,6 +1,7 @@
 package com.sdiemert.jgt.cli.command;
 
 import com.sdiemert.jgt.cli.scope.*;
+import com.sdiemert.jgt.util.Printer;
 
 import java.io.PrintStream;
 
@@ -8,7 +9,7 @@ public class ShowCommand extends Command {
 
     String sym;
 
-    public ShowCommand(PrintStream out){
+    public ShowCommand(Printer out){
         super(out);
     }
 
@@ -21,7 +22,7 @@ public class ShowCommand extends Command {
         this.sym = sym;
     }
 
-    public ShowCommand(PrintStream out, String sym){
+    public ShowCommand(Printer out, String sym){
         super(out);
         this.sym = sym;
     }

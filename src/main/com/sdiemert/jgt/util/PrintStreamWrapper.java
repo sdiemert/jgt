@@ -13,4 +13,8 @@ public class PrintStreamWrapper implements Printer {
     public void println(String s){
         ps.println(s);
     }
+
+    public void print(String s){
+        ps.print(s);
+    }
 }
