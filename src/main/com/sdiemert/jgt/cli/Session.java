@@ -23,4 +23,8 @@ public class Session {
         return currScope.scopeAsString();
     }
 
+    public Scope getScope(){
+        return this.currScope;
+    }
+
 }

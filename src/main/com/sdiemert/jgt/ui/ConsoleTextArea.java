@@ -18,11 +18,11 @@ public class ConsoleTextArea implements Printer {
     private StringBuilder sb;
     private JTextArea textArea;
     private Parser parser;
-    private CommandLineInterface c;
+    private Controller c;
 
     private int index;
 
-    public ConsoleTextArea(JTextArea area, CommandLineInterface c){
+    public ConsoleTextArea(JTextArea area, Controller c){
         super();
         sb = new StringBuilder();
         this.textArea = area;
@@ -53,9 +53,9 @@ public class ConsoleTextArea implements Printer {
 
             this.nextLine();
 
-            if(!this.c.repl(cmdString, this)) return;
+            if(!this.c.execute(cmdString, this)) return;
 
-            this.c.printPrompt(this);
+            this.c.displayPrompt(this);
 
             this.index += cmdString.length();
             this.textArea.setCaretPosition(this.index);
