@@ -1,17 +1,11 @@
 package com.sdiemert.jgt.ui;
 
-import com.sdiemert.jgt.cli.CommandLineInterface;
 import com.sdiemert.jgt.cli.Parser;
-import com.sdiemert.jgt.cli.ParserException;
-import com.sdiemert.jgt.cli.command.Command;
-import com.sdiemert.jgt.cli.scope.ScopeException;
-import com.sdiemert.jgt.core.GraphException;
-import com.sdiemert.jgt.core.RuleException;
 import com.sdiemert.jgt.util.Printer;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import java.io.IOException;
+import java.util.ArrayList;
 
 public class ConsoleTextArea implements Printer {
 
@@ -20,23 +14,24 @@ public class ConsoleTextArea implements Printer {
     private Parser parser;
     private Controller c;
 
+    private ArrayList<String> cmdHistory;
+    private int historyIndex;
+
     private int index;
 
     public ConsoleTextArea(JTextArea area, Controller c){
         super();
         sb = new StringBuilder();
         this.textArea = area;
+        this.cmdHistory = new ArrayList<String>();
+        this.historyIndex = 0;
 
         this.c = c;
 
         this.textArea.setLineWrap(true);
-
         this.parser = new Parser();
-
         this.textArea.addKeyListener(new ConsoleKeyListener(this));
-
         this.print(">>> ");
-
         this.textArea.setCaretPosition(this.index);
 
         System.out.println(this.index);
@@ -50,6 +45,9 @@ public class ConsoleTextArea implements Printer {
             int endLocation = this.textArea.getLineEndOffset(this.textArea.getLineCount() - 1);
 
             String cmdString = this.textArea.getText(index, (endLocation - index));
+
+            cmdHistory.add(cmdString);
+            historyIndex = cmdHistory.size() - 1;
 
             this.nextLine();
 
@@ -82,5 +80,6 @@ public class ConsoleTextArea implements Printer {
         this.textArea.append(out);
         this.index += out.length();
     }
+
 
 }

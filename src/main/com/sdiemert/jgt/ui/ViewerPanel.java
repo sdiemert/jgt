@@ -20,21 +20,20 @@ public class ViewerPanel extends JPanel {
     Controller control;
     ViewerMxGraph displayGraph;
     mxGraphComponent gc;
-    mxGraphLayout orgLayout;
-
+    mxFastOrganicLayout orgLayout;
     mxStylesheet stylesheet;
 
 
     public ViewerPanel(Controller c){
+
         this.control = c;
         displayGraph = new ViewerMxGraph();
+
         gc = new mxGraphComponent(displayGraph);
+        gc.setConnectable(false);
 
         orgLayout = new mxFastOrganicLayout(displayGraph);
-
-        ((mxFastOrganicLayout) orgLayout).setForceConstant(150);
-
-        gc.setConnectable(false);
+        orgLayout.setForceConstant(150);
 
         this.setupStyles();
 
