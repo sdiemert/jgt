@@ -3,6 +3,7 @@ package com.sdiemert.jgt.ui;
 import com.sdiemert.jgt.cli.Session;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
