@@ -50,6 +50,10 @@ public class Controller {
         this.cli.printPrompt(output);
     }
 
+    public String getPrompt(){
+        return this.cli.getPrompt();
+    }
+
     private void updateViewWithScope(){
         if(this.model.getScope() instanceof GraphScope){
             this.view.getViewer().displayGraph((GraphScope) this.model.getScope());

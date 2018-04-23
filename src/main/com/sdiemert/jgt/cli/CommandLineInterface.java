@@ -79,7 +79,11 @@ public class CommandLineInterface {
     }
 
     public void printPrompt(Printer out) {
-        out.print(session.scopeAsString()+" >>> ");
+        out.print(this.getPrompt());
+    }
+
+    public String getPrompt(){
+        return session.scopeAsString()+" >>> ";
     }
 
     private void printWelcome(Printer out) {

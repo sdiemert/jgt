@@ -1,40 +1,35 @@
 package com.sdiemert.jgt.ui;
 
-import com.sdiemert.jgt.cli.Parser;
 import com.sdiemert.jgt.util.Printer;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConsoleTextArea implements Printer {
 
-    private StringBuilder sb;
     private JTextArea textArea;
-    private Parser parser;
     private Controller c;
 
     private ArrayList<String> cmdHistory;
     private int historyIndex;
 
-    private int index;
-
     public ConsoleTextArea(JTextArea area, Controller c){
         super();
-        sb = new StringBuilder();
+
         this.textArea = area;
+        this.c = c;
+
         this.cmdHistory = new ArrayList<String>();
         this.historyIndex = 0;
 
-        this.c = c;
-
         this.textArea.setLineWrap(true);
-        this.parser = new Parser();
         this.textArea.addKeyListener(new ConsoleKeyListener(this));
         this.print(">>> ");
-        this.textArea.setCaretPosition(this.index);
 
-        System.out.println(this.index);
+        cursorToEnd();
 
     }
 
@@ -42,9 +37,21 @@ public class ConsoleTextArea implements Printer {
 
         try {
 
-            int endLocation = this.textArea.getLineEndOffset(this.textArea.getLineCount() - 1);
+            int currLine = this.textArea.getLineCount() - 1;
+            int endLocation = this.textArea.getLineEndOffset(currLine);
+            int startLocation = this.textArea.getLineStartOffset(currLine);
 
-            String cmdString = this.textArea.getText(index, (endLocation - index));
+            String raw = this.textArea.getText(startLocation, (endLocation - startLocation));
+
+            Matcher cmdMatcher = Pattern.compile("(.*)>>>\\s?(.+)").matcher(raw);
+
+            String cmdString;
+
+            if(cmdMatcher.find()) {
+                cmdString = cmdMatcher.group(2);
+            }else{
+                cmdString = "";
+            }
 
             cmdHistory.add(cmdString);
             historyIndex = cmdHistory.size() - 1;
@@ -55,8 +62,7 @@ public class ConsoleTextArea implements Printer {
 
             this.c.displayPrompt(this);
 
-            this.index += cmdString.length();
-            this.textArea.setCaretPosition(this.index);
+            cursorToEnd();
 
         }catch(BadLocationException e) {
             System.out.println(e.getMessage());
@@ -66,20 +72,63 @@ public class ConsoleTextArea implements Printer {
 
     private void nextLine(){
         this.textArea.append("\n");
-        this.index+=1;
     }
 
     public void println(String out){
         this.textArea.append(out);
-        this.index += out.length();
         this.nextLine();
-
     }
 
     public void print(String out){
         this.textArea.append(out);
-        this.index += out.length();
     }
 
+    public void scrollHistoryBack(){
+
+        if(cmdHistory.size() == 0){
+            return;
+        } else if(historyIndex <= 0){
+            historyIndex = 0;
+        }else if(historyIndex >= cmdHistory.size() - 1){
+            historyIndex = cmdHistory.size() - 1;
+        }
+
+        try {
+            int currLine = this.textArea.getLineCount() - 1;
+            int endLocation = this.textArea.getLineEndOffset(currLine);
+            int startLocation = this.textArea.getLineStartOffset(currLine);
+            textArea.replaceRange(this.c.getPrompt() + cmdHistory.get(historyIndex), startLocation, endLocation);
+            historyIndex--;
+            cursorToEnd();
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void scrollHistoryFwd(){
+
+        if(cmdHistory.size() == 0){
+            return;
+        } else if(historyIndex >= cmdHistory.size() - 1){
+            historyIndex = cmdHistory.size() - 1;
+        }else if(historyIndex <= 0){
+            historyIndex = 0;
+        }
+
+        try {
+            int currLine = this.textArea.getLineCount() - 1;
+            int endLocation = this.textArea.getLineEndOffset(currLine);
+            int startLocation = this.textArea.getLineStartOffset(currLine);
+            textArea.replaceRange(this.c.getPrompt() + cmdHistory.get(historyIndex), startLocation, endLocation);
+            historyIndex++;
+            cursorToEnd();
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void cursorToEnd(){
+        this.textArea.setCaretPosition(textArea.getDocument().getLength());
+    }
 
 }

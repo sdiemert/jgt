@@ -22,6 +22,12 @@ public class ConsoleKeyListener implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             cta.command();
             e.consume();
+        }else if(e.getKeyCode() == KeyEvent.VK_UP){
+            cta.scrollHistoryBack();
+            e.consume();
+        }else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+            cta.scrollHistoryFwd();
+            e.consume();
         }
 
     }
