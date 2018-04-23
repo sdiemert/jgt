@@ -178,4 +178,24 @@ public class RuleScope extends Scope {
         }
 
     }
+
+    public GraphScope getGraphScope() {
+        return graphScope;
+    }
+
+    public ArrayList<Node> getAddNodes() {
+        return addNodes;
+    }
+
+    public ArrayList<Edge> getAddEdges() {
+        return addEdges;
+    }
+
+    public ArrayList<Node> getDelNodes() {
+        return delNodes;
+    }
+
+    public ArrayList<Edge> getDelEdges() {
+        return delEdges;
+    }
 }

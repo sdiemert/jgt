@@ -3,6 +3,7 @@ package com.sdiemert.jgt.ui;
 import com.sdiemert.jgt.cli.CommandLineInterface;
 import com.sdiemert.jgt.cli.Session;
 import com.sdiemert.jgt.cli.scope.GraphScope;
+import com.sdiemert.jgt.cli.scope.RuleScope;
 import com.sdiemert.jgt.util.Printer;
 
 public class Controller {
@@ -57,6 +58,8 @@ public class Controller {
     private void updateViewWithScope(){
         if(this.model.getScope() instanceof GraphScope){
             this.view.getViewer().displayGraph((GraphScope) this.model.getScope());
+        }else if(this.model.getScope() instanceof RuleScope){
+            this.view.getViewer().displayRule((RuleScope) this.model.getScope());
         }
     }
 }
