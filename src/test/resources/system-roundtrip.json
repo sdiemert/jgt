@@ -1,0 +1,1 @@
+{"id":"s1","rules":[{"id":"r1","delEdges":[],"graph":{"id":"g1","edges":[{"id":"e1","label":"e","tar":"n2","src":"n1"}],"nodes":[{"id":"n1","label":"A"},{"id":"n2","label":"B"}]},"addNodes":[],"delNodes":[],"addEdges":[]}]}
