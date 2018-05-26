@@ -5,5 +5,6 @@ install:
     - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 before_script:
+    - ls -lat ./lib
     - echo "MAVEN_OPTS='-Djava.library.path=./lib'" > ~/.mavenrc
     - mvn test -B -Djava.library.path=./lib
