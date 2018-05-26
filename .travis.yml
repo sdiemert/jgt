@@ -5,6 +5,4 @@ install:
     - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 script:
-  - sudo rm /etc/mavenrc
-  - export MAVEN_OPTS="-Djava.library.path=./lib"
-  - mvn test -B
+  - MAVEN_SKIP_RC=true MAVEN_OPTS="-Djava.library.path=./lib" mvn test -B
