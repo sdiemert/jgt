@@ -5,4 +5,5 @@ install:
     - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 script:
-    - _JAVA_OPTIONS= MAVEN_SKIP_RC=true MAVEN_OPTS="-Djava.library.path=$TRAVIS_BUILD_DIR/lib" mvn test -B
+# - _JAVA_OPTIONS= MAVEN_SKIP_RC=true MAVEN_OPTS="-Djava.library.path=$TRAVIS_BUILD_DIR/lib" mvn test -B
+    - mvn test -B -DargLine="-Djava.library.path=./lib"
