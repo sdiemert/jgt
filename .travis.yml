@@ -6,3 +6,4 @@ install:
 
 before_script:
     - echo "MAVEN_OPTS='-Djava.library.path=./lib'" > ~/.mavenrc
+    - mvn test -B -Djava.library.path=./lib
