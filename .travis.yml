@@ -4,3 +4,5 @@ install:
     - scripts/install-dependencies.sh
     - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
+before_script:
+    - echo "MAVEN_OPTS='-Djava.library.path=./lib'" > ~/.mavenrc
