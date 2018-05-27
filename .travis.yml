@@ -1,7 +1,6 @@
 language: java
 
 install:
-    - apt-get update
     - apt-get install build-essential
     - scripts/install-dependencies.sh
     - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
