@@ -1,3 +1,4 @@
+dist: trusty
 language: java
 
 install:
@@ -9,3 +10,12 @@ install:
 script:
     - export LD_LIBRARY_PATH="$TRAVIS_BUILD_DIR/lib/"
     - mvn test -B
+
+addons:
+  sonarcloud:
+    organization: "sdiemert-github"
+    token:
+        secure: "RuJN9SNloNy9dtTHQfAS0pKBrwkkHKEfMBZJ0fX9pgMMSJjW8H3Wb9n/GqI1xrHVZZCTQefYMda1c+ALGLnoPfnUGe15+jcG+vW035vYE4cC5XmCdFv5WwfUWLdulkwIZ5r8A4IHjZKcVZYTDGw4cVAMz7WKf2Mv0n4ylAIvH+LZt6kqlRFTSeeMo+5djV6SPSDtqfliKC6WdDN2qa4gwHOO9Mx03viaq6kwrahvF03rGRukKEo+4mV/vlZqUHWXeTq/4+cHMWDgbRseJuMDYGfgRo5gjOpoZWiczdEB789zOC58S1HidAbA4Cv/fSdWlYd0H1RkbZG9dUK0yv+/xuBnFVRB40ZECir9rJHfNuT2Ww3tDbGgk/u4p6AbDLKu10xA+jvTLMo5jZom6blwvBSixbptN2qyzClq+bq9Jkq9/hp3L2yWySkxmmS6WBxUd+KXwiUIRueywXokDzngZ90X2jRPR4NAyE/Nape2K0nApJyXd81rqmsiTQKwd07yhZ8Zi/YHqE/aeutlMNKRkalCMj2FG64DrS3BxqLB0WHgUZWJJyDnlUf4p0yOehDS5lVJ40iAzahaWi86Gr9HBmytGFEXfp/auxHioa+69od+i6KRaWFP0ja0tbhX9NRSQOkKx7sfT6MACoTsS9nnDaldYgzNmcWLcmctVcc8H8Q="
+script:
+  # other script steps might be done before running the actual analysis
+  - sh scripts/sonar.sh
