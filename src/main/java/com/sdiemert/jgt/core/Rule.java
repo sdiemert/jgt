@@ -25,7 +25,8 @@ public class Rule extends Condition {
      *
      * @throws GraphException if rule graph or its LHS (without addNodes and addEdges) are not valid.
      */
-    public Rule(Graph g, ArrayList<Node> addNodes, ArrayList<Edge> addEdges, ArrayList<Node> delNodes, ArrayList<Edge> delEdges) throws GraphException {
+    public Rule(Graph g, ArrayList<Node> addNodes, ArrayList<Edge> addEdges,
+                ArrayList<Node> delNodes, ArrayList<Edge> delEdges) throws GraphException {
 
         super(g);
 

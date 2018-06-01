@@ -44,7 +44,7 @@ public class GraphTest {
         assertNotNull(n.getId());
         assertNotNull(n.getType());
         assertNotNull(n.getData());
-        assertEquals(1, n.getData().getVal());
+        assertEquals(1, (int) n.getData().getVal());
         assertEquals("A", n.getType());
     }
 

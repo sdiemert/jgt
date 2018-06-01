@@ -1,1 +1,1 @@
-{"id":"g1","edges":[{"id":"e1","label":"e","tar":"n2","src":"n1"}],"nodes":[{"id":"n1","label":"A"},{"id":"n2","label":"B"}]}
+{"nodes":[{"id":"n1","label":"A"},{"id":"n2","label":"B"}],"edges":[{"tar":"n2","src":"n1","id":"e1","label":"e"}],"id":"g1"}
