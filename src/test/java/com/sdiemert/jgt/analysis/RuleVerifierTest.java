@@ -47,7 +47,7 @@ public class RuleVerifierTest {
 
         RuleVerifier rv = new RuleVerifier();
 
-        rule = new Rule(rg, new ArrayList<Node>(Arrays.asList(rN0)), new ArrayList<Edge>(Arrays.asList(rE0)), null, null);
+        rule = new Rule(rg, new ArrayList<Node>(Arrays.asList(rN0)), new ArrayList<Edge>(Arrays.asList(rE0)), null, null, null, null);
 
         VerificationResult v = rv.check(rule);
 
@@ -61,7 +61,7 @@ public class RuleVerifierTest {
 
         RuleVerifier rv = new RuleVerifier();
 
-        rule = new Rule(rg, new ArrayList<Node>(Arrays.asList(rN0)), new ArrayList<Edge>(Arrays.asList(rE0)), new ArrayList<Node>(Arrays.asList(rN1, rN2)), null);
+        rule = new Rule(rg, new ArrayList<Node>(Arrays.asList(rN0)), new ArrayList<Edge>(Arrays.asList(rE0)), new ArrayList<Node>(Arrays.asList(rN1, rN2)), null, null, null);
 
         // here we artificially create an overlapping node in both add and delete nodes.
         rule.getAddNodes().set(0, rN1);
@@ -86,7 +86,7 @@ public class RuleVerifierTest {
                 new ArrayList<Node>(Arrays.asList(rN0)),
                 new ArrayList<Edge>(Arrays.asList(rE0)),
                 new ArrayList<Node>(Arrays.asList(rN1, rN2)),
-                new ArrayList<Edge>(Arrays.asList(rE1)));
+                new ArrayList<Edge>(Arrays.asList(rE1)), null, null);
 
         // here we artificially create an overlapping node in both add and delete nodes.
         rule.getAddEdges().set(0, rE1);

@@ -12,6 +12,8 @@ public class Rule extends Condition {
     private ArrayList<Edge> addEdges;
     private ArrayList<Node> delNodes;
     private ArrayList<Edge> delEdges;
+    private ArrayList<Node> nacNodes;
+    private ArrayList<Edge> nacEdges;
     String id;
 
     /**
@@ -22,11 +24,14 @@ public class Rule extends Condition {
      * @param addEdges references to Edges in g that are to be added during rule application.
      * @param delNodes references to Nodes in g that are to be deleted during rule application.
      * @param delEdges references to Edges in g that are to be deleted during rule application.
+     * @param nacNodes references to Nodes in g that are negative application condition nodes.
+     * @param nacEdges references to Edges in g that are negative application conditions edges.
      *
      * @throws GraphException if rule graph or its LHS (without addNodes and addEdges) are not valid.
      */
     public Rule(Graph g, ArrayList<Node> addNodes, ArrayList<Edge> addEdges,
-                ArrayList<Node> delNodes, ArrayList<Edge> delEdges) throws GraphException {
+                ArrayList<Node> delNodes, ArrayList<Edge> delEdges,
+                ArrayList<Node> nacNodes, ArrayList<Edge> nacEdges) throws GraphException {
 
         super(g);
 
@@ -38,46 +43,13 @@ public class Rule extends Condition {
         this.delNodes = delNodes != null ? delNodes : new ArrayList<Node>();
         this.delEdges = delEdges != null ? delEdges : new ArrayList<Edge>();
 
-        // TODO: Implement NACs.
+        this.nacNodes = nacNodes != null ? nacNodes : new ArrayList<Node>();
+        this.nacEdges = nacEdges != null ? nacEdges : new ArrayList<Edge>();
 
         // determine the LHS once, otherwise we would have to do it every time the rule is applied.
         this.determineLHS();
 
         this.id = "rule-"+UUID.randomUUID().toString();
-    }
-
-    /**
-     * Makes a new transformation Rule.
-     *
-     * @param id an identifier for this Rule.
-     * @param g the graph describing the Rule.
-     * @param addNodes references to Nodes in g that are to be added during rule application.
-     * @param addEdges references to Edges in g that are to be added during rule application.
-     * @param delNodes references to Nodes in g that are to be deleted during rule application.
-     * @param delEdges references to Edges in g that are to be deleted during rule application.
-     *
-     * @throws GraphException if rule graph or its LHS (without addNodes and addEdges) are not valid.
-     */
-    public Rule(String id, Graph g, ArrayList<Node> addNodes, ArrayList<Edge> addEdges, ArrayList<Node> delNodes, ArrayList<Edge> delEdges) throws GraphException {
-
-        super(g);
-
-        this.id = id;
-
-        this.ruleGraph  = g;
-
-        this.addNodes = addNodes != null ? addNodes : new ArrayList<Node>();
-        this.addEdges = addEdges != null ? addEdges : new ArrayList<Edge>();
-
-        this.delNodes = delNodes != null ? delNodes : new ArrayList<Node>();
-        this.delEdges = delEdges != null ? delEdges : new ArrayList<Edge>();
-
-        // TODO: Implement NACs.
-
-        // determine the LHS once, otherwise we would have to do it every time the rule is applied.
-        this.determineLHS();
-
-
     }
 
     /**
@@ -243,7 +215,19 @@ public class Rule extends Condition {
         return delEdges;
     }
 
+    public ArrayList<Node> getNacNodes() {
+        return nacNodes;
+    }
+
+    public ArrayList<Edge> getNacEdges() {
+        return nacEdges;
+    }
+
     public String getId(){
         return this.id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 }

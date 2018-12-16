@@ -48,8 +48,8 @@ public class RuleScope extends Scope {
     public Scope exit() throws GraphException, ScopeException {
 
         Rule r = new Rule(
-                this.sym, this.graphScope.graph,
-                this.addNodes, this.addEdges, this.delNodes, this.delEdges);
+                this.graphScope.graph,
+                this.addNodes, this.addEdges, this.delNodes, this.delEdges, null, null);
 
         this.parent.add(this.sym, r);
 

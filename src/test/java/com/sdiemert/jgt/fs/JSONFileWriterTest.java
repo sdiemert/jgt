@@ -33,7 +33,9 @@ public class JSONFileWriterTest {
         g.addNodes(n1, n2);
         g.addEdge(e);
 
-        Rule r = new Rule("r1", g, null, null, null, null);
+        Rule r = new Rule(g, null, null, null, null, null, null);
+
+        r.setId("r1");
 
         JSONObject jR = fw.ruleToJSON(r);
 

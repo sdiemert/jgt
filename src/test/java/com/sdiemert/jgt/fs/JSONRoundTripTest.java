@@ -65,7 +65,9 @@ public class JSONRoundTripTest {
         g.addNodes(n1, n2);
         g.addEdge(e);
 
-        Rule r = new Rule("r1", g, null, null, null, null);
+        Rule r = new Rule(g, null, null, null, null, null, null);
+
+        r.setId("r1");
 
         GTSystem s = new GTSystem("s1");
 

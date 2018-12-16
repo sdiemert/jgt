@@ -28,7 +28,7 @@ public class GTSystemTest {
         Node r1n0 = new Node("A");
         Graph r1Graph = new Graph();
         r1Graph.addNode(r1n0);
-        Rule r1 = new Rule(r1Graph, null, null, null, null);
+        Rule r1 = new Rule(r1Graph, null, null, null, null, null, null);
 
         Node r2n0 = new Node("A");
         Node r2n1 = new Node("B");
@@ -36,7 +36,7 @@ public class GTSystemTest {
         Graph r2Graph = new Graph();
         r2Graph.addNodes(r2n0, r2n1);
         r2Graph.addEdges(r2e0);
-        Rule r2 = new Rule(r1Graph, null, null, null, null);
+        Rule r2 = new Rule(r1Graph, null, null, null, null, null, null);
 
         GTSystem gts = new GTSystem();
         gts.addRule(r1);
@@ -76,7 +76,7 @@ public class GTSystemTest {
         Node r1n0 = new Node("Z");
         Graph r1Graph = new Graph();
         r1Graph.addNode(r1n0);
-        Rule r1 = new Rule(r1Graph, null, null, null, null);
+        Rule r1 = new Rule(r1Graph, null, null, null, null, null, null);
 
         Node r2n0 = new Node("X");
         Node r2n1 = new Node("Y");
@@ -84,7 +84,7 @@ public class GTSystemTest {
         Graph r2Graph = new Graph();
         r2Graph.addNodes(r2n0, r2n1);
         r2Graph.addEdges(r2e0);
-        Rule r2 = new Rule(r1Graph, null, null, null, null);
+        Rule r2 = new Rule(r1Graph, null, null, null, null, null, null);
 
         GTSystem gts = new GTSystem();
         gts.addRule(r1);
@@ -115,7 +115,7 @@ public class GTSystemTest {
         r1Graph.addNode(r1n0);
         ArrayList<Node> r1DelNodes = new ArrayList<Node>();
         r1DelNodes.add(r1n0);
-        Rule r1 = new Rule(r1Graph, null, null, r1DelNodes, null);
+        Rule r1 = new Rule(r1Graph, null, null, r1DelNodes, null, null, null);
 
         Node r2n0 = new Node("A");
         Node r2n1 = new Node("B");
@@ -126,7 +126,7 @@ public class GTSystemTest {
         ArrayList<Node> r2DelNodes = new ArrayList<Node>();
         r2DelNodes.add(r2n0);
         r2DelNodes.add(r2n1);
-        Rule r2 = new Rule(r2Graph, null, null, r2DelNodes, null);
+        Rule r2 = new Rule(r2Graph, null, null, r2DelNodes, null, null, null);
 
         GTSystem gts = new GTSystem();
         gts.addRule(r1);

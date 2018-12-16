@@ -31,7 +31,7 @@ public class RuleTest {
         ArrayList<Edge> addEdges = new ArrayList<Edge>();
         addEdges.add(e0);
 
-        Rule r = new Rule(g, addNodes, addEdges, null, null);
+        Rule r = new Rule(g, addNodes, addEdges, null, null, null, null);
 
         assertNotNull(r.matchGraph);
         assertEquals(2, r.matchGraph.getNodes().size());
@@ -59,7 +59,7 @@ public class RuleTest {
         ArrayList<Edge> delEdges = new ArrayList<Edge>();
         delEdges.add(e0);
 
-        Rule r = new Rule(g, null, null, delNodes, delEdges);
+        Rule r = new Rule(g, null, null, delNodes, delEdges,null, null);
 
         assertNotNull(r.matchGraph);
         assertEquals(3, r.matchGraph.getNodes().size());
@@ -84,7 +84,7 @@ public class RuleTest {
         addEdges.add(re1);
         addEdges.add(re2);
 
-        Rule r = new Rule(ruleGraph, addNodes, addEdges, null, null);
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, null, null, null, null);
 
         Graph host = new Graph();
         Node hn0 = new Node("A");
@@ -121,7 +121,7 @@ public class RuleTest {
         delEdges.add(re1);
         delEdges.add(re2);
 
-        Rule r = new Rule(ruleGraph, null, null, delNodes, delEdges);
+        Rule r = new Rule(ruleGraph, null, null, delNodes, delEdges, null, null);
 
         Graph host = new Graph();
         Node hn0 = new Node("A");
@@ -168,7 +168,7 @@ public class RuleTest {
         addEdges.add(re3);
         addEdges.add(re4);
 
-        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges);
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges, null, null);
 
         Graph host = new Graph();
         Node hn0 = new Node("A");
@@ -207,7 +207,7 @@ public class RuleTest {
         ArrayList<Edge> addEdges = new ArrayList<Edge>();
         delNodes.add(rn1);
 
-        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges);
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges, null, null);
 
         Graph host = new Graph();
         Node hn0 = new Node("A");
@@ -239,7 +239,7 @@ public class RuleTest {
         ArrayList<Edge> addEdges = new ArrayList<Edge>();
         delNodes.add(rn1);
 
-        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges);
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges, null, null);
 
         Graph host = new Graph();
         Node hn0 = new Node("A");

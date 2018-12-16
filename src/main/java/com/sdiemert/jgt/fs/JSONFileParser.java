@@ -177,7 +177,11 @@ public class JSONFileParser extends FileParser {
             }
         }
 
-        return new Rule(id, ruleGraph, addNodes, addEdges, delNodes, delEdges);
+        Rule r = new Rule(ruleGraph, addNodes, addEdges, delNodes, delEdges, null, null);
+
+        r.setId(id);
+
+        return r;
 
     }
 
