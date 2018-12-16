@@ -9,6 +9,7 @@ install:
 
 script:
     - export LD_LIBRARY_PATH="$TRAVIS_BUILD_DIR/lib/"
+    - echo $LD_LIBRARY_PATH
     - mvn test -B
 
 addons:
