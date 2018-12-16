@@ -8,6 +8,8 @@ import java.util.UUID;
 public class Rule extends Condition {
 
     Graph ruleGraph;
+
+    // internal graph representation as lists of nodes and edges
     private ArrayList<Node> addNodes;
     private ArrayList<Edge> addEdges;
     private ArrayList<Node> delNodes;
